@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PCCI Membership Application Form</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            color: #1a1a1a;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 4px solid #1e3a8a; /* PCCI Blue */
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        
+        /* UPDATED LOGO STYLES */
+        .logo-img {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+        }
+
+        .title {
+            text-align: right;
+        }
+        .title h1 {
+            margin: 0;
+            color: #1e3a8a;
+            font-size: 24px;
+            text-transform: uppercase;
+        }
+        .title p {
+            margin: 5px 0 0;
+            color: #666;
+            font-size: 10px;
+        }
+
+        /* Form Grid */
+        .section-title {
+            background-color: #f3f4f6;
+            padding: 5px 10px;
+            font-weight: bold;
+            color: #1e3a8a;
+            margin-top: 15px;
+            border-left: 4px solid #eab308;
+            text-transform: uppercase;
+            font-size: 11px;
+        }
+
+        .row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+        .col {
+            flex: 1;
+        }
+        .field {
+            margin-bottom: 8px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 4px;
+            font-size: 10px;
+            color: #444;
+        }
+        .input-box {
+            width: 100%;
+            border: 1px solid #ccc;
+            height: 25px;
+            background: #fff;
+        }
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 10px;
+            width: 48%;
+        }
+        .box {
+            width: 12px;
+            height: 12px;
+            border: 1px solid #333;
+            display: inline-block;
+        }
+
+        /* Fees Table */
+        .fees-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 10px;
+        }
+        .fees-table th, .fees-table td {
+            border: 1px solid #ddd;
+            padding: 6px;
+            text-align: left;
+        }
+        .fees-table th {
+            background-color: #1e3a8a;
+            color: white;
+        }
+
+        /* Payment Info */
+        .payment-box {
+            border: 1px dashed #1e3a8a;
+            padding: 10px;
+            background-color: #eff6ff;
+            margin-top: 10px;
+        }
+
+        /* Footer / Consent */
+        .consent {
+            margin-top: 20px;
+            font-size: 9px;
+            text-align: justify;
+            color: #555;
+            border-top: 1px solid #ccc;
+            padding-top: 10px;
+        }
+        .signature-line {
+            margin-top: 40px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .sig-box {
+            text-align: center;
+            width: 40%;
+        }
+        .line {
+            border-bottom: 1px solid black;
+            height: 20px;
+            margin-bottom: 5px;
+        }
+
+        /* Print Settings */
+        @media print {
+            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; padding: 0; }
+            @page { size: A4; margin: 1cm; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <img src="pcci-logo.png" alt="PCCI Logo" class="logo-img">
+        
+        <div class="title">
+            <h1>Membership Application</h1>
+            <p>Philippine Chamber of Commerce and Industry - Las Piñas City Inc.</p>
+            <p>Unit 101, Pilar Village, Las Piñas City | secretariat@pccilaspinas.org</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <div class="checkbox-group">
+                <div class="checkbox-item"><span class="box"></span> New Applicant</div>
+                <div class="checkbox-item"><span class="box"></span> Renewal (Current Member)</div>
+            </div>
+        </div>
+        <div class="col" style="text-align: right;">
+            Date: _______________________
+        </div>
+    </div>
+
+    <div class="section-title">I. Representative Information</div>
+    <div class="row">
+        <div class="col">
+            <label>2. Last Name</label>
+            <div class="input-box"></div>
+        </div>
+        <div class="col">
+            <label>3. First Name</label>
+            <div class="input-box"></div>
+        </div>
+        <div class="col" style="flex: 0.5">
+            <label>4. Gender</label>
+            <div class="checkbox-group">
+                <span class="box"></span> M <span class="box"></span> F
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <label>5. Email Address</label>
+            <div class="input-box"></div>
+        </div>
+        <div class="col">
+            <label>6. Mobile Number</label>
+            <div class="input-box"></div>
+        </div>
+    </div>
+
+    <div class="section-title">II. Company Information</div>
+    <div class="row">
+        <div class="col">
+            <label>7. Company Name</label>
+            <div class="input-box"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <label>8. Company Address</label>
+            <div class="input-box"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <label>9. Job Title</label>
+            <div class="checkbox-group">
+                <div class="checkbox-item"><span class="box"></span> Chairman</div>
+                <div class="checkbox-item"><span class="box"></span> President</div>
+                <div class="checkbox-item"><span class="box"></span> Manager</div>
+                <div class="checkbox-item"><span class="box"></span> Proprietor</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-title">III. Classification & Fees</div>
+    <div class="row">
+        <div class="col">
+            <label>10. Company Category (Please check based on Total Assets)</label>
+            <table class="fees-table">
+                <tr>
+                    <th style="width: 5%">✓</th>
+                    <th>Category</th>
+                    <th>Asset Size</th>
+                    <th>Annual Fee</th>
+                </tr>
+                <tr>
+                    <td><span class="box"></span></td>
+                    <td><strong>Micro</strong></td>
+                    <td>Less than ₱ 3 Million</td>
+                    <td>₱ 1,500.00</td>
+                </tr>
+                <tr>
+                    <td><span class="box"></span></td>
+                    <td><strong>Small</strong></td>
+                    <td>₱ 3 Million - ₱ 15 Million</td>
+                    <td>₱ 2,500.00</td>
+                </tr>
+                <tr>
+                    <td><span class="box"></span></td>
+                    <td><strong>Medium</strong></td>
+                    <td>₱ 15 Million - ₱ 100 Million</td>
+                    <td>₱ 5,000.00</td>
+                </tr>
+                <tr>
+                    <td><span class="box"></span></td>
+                    <td><strong>Large</strong></td>
+                    <td>₱ 100 Million or higher</td>
+                    <td>₱ 10,000.00</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <label>11. No. of Employees</label>
+            <div class="input-box" style="width: 100px;"></div>
+        </div>
+        <div class="col" style="flex: 2;">
+            <label>12. Industry (e.g., Manufacturing, Retail, IT)</label>
+            <div class="input-box"></div>
+        </div>
+    </div>
+
+    <div class="section-title">IV. Committee & Advocacy Interest</div>
+    <div class="row">
+        <div class="col">
+            <label>13. Committee (Select all that apply)</label>
+            <div class="checkbox-group">
+                <div class="checkbox-item"><span class="box"></span> Membership</div>
+                <div class="checkbox-item"><span class="box"></span> Marketing</div>
+                <div class="checkbox-item"><span class="box"></span> Events</div>
+                <div class="checkbox-item"><span class="box"></span> Sports</div>
+                <div class="checkbox-item"><span class="box"></span> CSR</div>
+                <div class="checkbox-item"><span class="box"></span> Ways & Means</div>
+            </div>
+        </div>
+        <div class="col">
+            <label>14. Advocacy</label>
+            <div class="checkbox-group">
+                <div class="checkbox-item"><span class="box"></span> Education</div>
+                <div class="checkbox-item"><span class="box"></span> Environment</div>
+                <div class="checkbox-item"><span class="box"></span> Innovation</div>
+                <div class="checkbox-item"><span class="box"></span> Taxation</div>
+                <div class="checkbox-item"><span class="box"></span> Safety</div>
+                <div class="checkbox-item"><span class="box"></span> Tourism</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-title">V. Payment Details</div>
+    <div class="payment-box">
+        <div class="row">
+            <div class="col">
+                <strong>BANK TRANSFER:</strong><br>
+                Bank: Bank of Makati (Las Piñas Branch)<br>
+                Acct No: 0561 3500 0058<br>
+                Name: PCCI Las Piñas City Inc.
+            </div>
+            <div class="col">
+                <strong>GCASH:</strong><br>
+                Number: 0917 717 9658<br>
+                Name: Jhie Fabellano
+            </div>
+        </div>
+        <div style="margin-top: 10px; border-top: 1px solid #ccc; padding-top: 5px;">
+            <label>15. Payment Reference (If paid)</label>
+            Ref Number: ________________________ Amount: ________________________
+        </div>
+    </div>
+
+    <div class="consent">
+        <strong>17. Data Privacy Consent:</strong> By signing this form, I hereby certify that the information provided is true and correct. I consent to the collection and processing of my personal data by PCCI Las Piñas in accordance with the Data Privacy Act of 2012 (RA 10173).
+    </div>
+
+    <div class="signature-line">
+        <div class="sig-box">
+            <div class="line"></div>
+            Applicant Signature over Printed Name
+        </div>
+        <div class="sig-box">
+            <div class="line"></div>
+            Date Signed
+        </div>
+    </div>
+
+</body>
+</html>
