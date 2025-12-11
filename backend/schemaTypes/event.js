@@ -1,24 +1,31 @@
-// backend/schemaTypes/event.js
 import { defineField, defineType } from 'sanity'
 
 export default defineType({
   name: 'event',
-  title: 'Event', // This is what shows up in the button
+  title: 'News & Events',
   type: 'document',
   fields: [
     defineField({
       name: 'title',
-      title: 'Event Title',
+      title: 'Headline',
       type: 'string',
       validation: rule => rule.required()
     }),
     defineField({
-      name: 'date',
-      title: 'Date of Event',
-      type: 'date', // Adds a nice calendar picker
+      name: 'slug',
+      title: 'Slug (URL)',
+      type: 'slug',
       options: {
-        dateFormat: 'YYYY-MM-DD',
-      }
+        source: 'title',
+        maxLength: 96,
+      },
+      validation: rule => rule.required()
+    }),
+    defineField({
+      name: 'date',
+      title: 'Date',
+      type: 'date',
+      options: { dateFormat: 'YYYY-MM-DD' }
     }),
     defineField({
       name: 'category',
@@ -26,19 +33,23 @@ export default defineType({
       type: 'string',
       options: {
         list: [
-          { title: 'National Event', value: 'National Event' },
-          { title: 'Chapter Event', value: 'Chapter Event' },
-          { title: 'Technical Seminar', value: 'Technical' },
+            { title: 'Press Release', value: 'Press Release' },
+            { title: 'Event', value: 'Event' },
+            { title: 'Advisory', value: 'Advisory' },
         ],
       },
     }),
     defineField({
       name: 'image',
-      title: 'Event Poster/Image',
+      title: 'Cover Image',
       type: 'image',
-      options: {
-        hotspot: true, // Allows you to crop images nicely
-      },
+      options: { hotspot: true },
+    }),
+    defineField({
+      name: 'body',
+      title: 'Full Article Content',
+      type: 'array', 
+      of: [{type: 'block'}] // This allows Rich Text (Paragraphs, Bold, etc.)
     }),
   ],
 })

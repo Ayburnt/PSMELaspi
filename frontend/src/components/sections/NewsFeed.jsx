@@ -1,17 +1,19 @@
 import { useEffect, useState } from 'react';
-import { client, urlFor } from '../../sanityClient'; // <--- Import urlFor
+import { client } from '../../sanityClient'; 
+import { ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom'; // <--- Import Link
 
 export default function NewsFeed() {
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
-    // 1. We added 'image' to the query below
+    // 1. We MUST fetch the 'slug' to link correctly
     const query = `*[_type == "event"] | order(date desc) {
       title,
       date,
       category,
-      image 
-    }`;
+      slug 
+    }[0...4]`; 
 
     client.fetch(query)
       .then((data) => setEvents(data))
@@ -19,44 +21,56 @@ export default function NewsFeed() {
   }, []);
 
   return (
-    <section id="news" className="py-20 bg-gray-50 border-t border-gray-200">
+    <section id="news" className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4">
-        <h2 className="text-2xl font-bold text-gray-900 mb-10">Latest News & Updates</h2>
+        
+        <div className="flex flex-col md:flex-row justify-between items-end mb-4">
+            <h2 className="text-5xl font-serif font-bold text-gray-900">News</h2>
+            <a href="#" className="hidden md:block bg-blue-950 text-white px-6 py-3 rounded text-sm font-bold hover:bg-blue-900 transition">
+                View All News
+            </a>
+        </div>
+        <div className="w-full h-px bg-gray-200 mb-10"></div>
 
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {events.map((event, index) => (
-            <div key={index} className="bg-white rounded shadow-sm border-l-4 border-blue-900 overflow-hidden hover:shadow-md transition">
-              
-              {/* --- IMAGE FIX IS HERE --- */}
-              {event.image && (
-                <div className="h-48 w-full overflow-hidden">
-                  <img 
-                    // This generates the actual URL
-                    src={urlFor(event.image).width(400).url()} 
-                    alt={event.title}
-                    className="w-full h-full object-cover transform hover:scale-105 transition duration-500"
-                  />
-                </div>
-              )}
-              {/* ------------------------- */}
+            // WRAP THE CARD IN A LINK
+            <Link 
+              to={`/news/${event.slug?.current}`} 
+              key={index} 
+              className="bg-slate-50 p-6 rounded-lg flex flex-col justify-between hover:shadow-lg transition group border border-transparent hover:border-gray-200 h-full cursor-pointer"
+            >
+              <div>
+                {/* NO IMAGE HERE AS REQUESTED */}
 
-              <div className="p-6">
-                <span className="text-xs font-bold text-yellow-600 uppercase tracking-wider">
-                  {event.category}
+                <span className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 block">
+                  {event.category || 'Press Release'}
                 </span>
-                <h3 className="text-lg font-bold text-gray-800 mt-2 mb-4 leading-snug">
+                
+                <h3 className="text-xl font-serif font-bold text-blue-950 mb-3 leading-tight line-clamp-4">
                   {event.title}
                 </h3>
-                <p className="text-gray-400 text-xs font-medium">
-                  {event.date}
-                </p>
               </div>
-            </div>
+
+              <div className="flex justify-between items-center mt-4 pt-4 border-t border-gray-200/50">
+                 <span className="text-xs text-gray-400">{event.date}</span>
+                 <ArrowRight className="text-blue-950 w-5 h-5 transform group-hover:translate-x-1 transition" />
+              </div>
+            </Link>
           ))}
 
           {events.length === 0 && (
-            <p className="text-gray-500 col-span-3 text-center">Loading events...</p>
+            <div className="col-span-4 text-center py-10 text-gray-400 bg-slate-50 rounded">
+                Loading latest news...
+            </div>
           )}
+        </div>
+        
+        {/* Mobile View All */}
+        <div className="mt-8 md:hidden text-center">
+            <a href="#" className="bg-blue-950 text-white px-6 py-3 rounded text-sm font-bold w-full block">
+                View All News
+            </a>
         </div>
       </div>
     </section>
