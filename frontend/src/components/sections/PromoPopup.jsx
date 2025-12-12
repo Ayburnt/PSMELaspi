@@ -6,7 +6,7 @@ const PromoPopup = () => {
 
   useEffect(() => {
     // Show popup after 2.5 seconds
-    const timer = setTimeout(() => setShow(true), 10000);
+    const timer = setTimeout(() => setShow(true), 100000);
     return () => clearTimeout(timer);
   }, []);
 
