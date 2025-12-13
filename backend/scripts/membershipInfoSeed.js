@@ -1,69 +1,115 @@
+// scripts/membershipInfoSeed.js
+// Run with: node scripts/membershipInfoSeed.js
+
 import 'dotenv/config'
 import { createClient } from '@sanity/client'
-import { v4 as uuidv4 } from 'uuid' // for generating unique keys
 
 const client = createClient({
   projectId: '2svpsi6g',
   dataset: 'production',
   useCdn: false,
   token: process.env.SANITY_TOKEN,
-  apiVersion: '2025-12-12',
+  apiVersion: '2024-01-01',
 })
 
 async function seedMembershipInfo() {
-  const doc = {
-    _type: 'membershipInfo',
-    title: 'Join PCCI Today!',
-    tagline: 'Empowering businesses, connecting leaders, shaping the future.',
-    heroBackgroundImage: {
-  _type: 'image',
-}, // leave blank for Studio upload
-    qualificationsTitle: 'Membership Qualifications',
-    qualifications: [
-      {
-        _type: 'qualification',
-        _key: uuidv4(), // unique key
-        title: 'Business Registration',
-        description: 'Your business must be officially registered and in good standing.',
-        icon: 'Building2',
-      },
-      {
-        _type: 'qualification',
-        _key: uuidv4(), // unique key
-        title: 'Active Operations',
-        description: 'Your business should be actively operating for at least 1 year.',
-        icon: 'UserCheck',
-      },
-    ],
-    requirementsTitle: 'Documentary Requirements',
-    requirements: [
-      'Copy of Business Registration',
-      'Latest Financial Statement',
-      'Certificate of Good Standing',
-    ],
-    requirementsNote: 'All documents must be submitted in PDF format.',
-    processTitle: 'Application Process',
-    processDescription:
-      'Submit your documents, pay the membership fee, and wait for verification by our team.',
-    bankDetailsTitle: 'Bank Details for Payment',
-    bankName: 'Sample Bank',
-    bankBranch: 'Main Branch',
-    accountName: 'PCCI Membership Account',
-  }
-
   try {
-    // Delete existing documents
-    const existing = await client.fetch(`*[_type == "membershipInfo"]{_id}`)
-    for (const item of existing) {
-      await client.delete(item._id)
-      console.log(`Deleted existing membershipInfo: ${item._id}`)
+    console.log('🧹 Removing existing Membership Info documents...')
+
+    // 1️⃣ Delete ALL existing membershipInfo docs
+    const existingDocs = await client.fetch(
+      `*[_type == "membershipInfo"]._id`
+    )
+
+    if (existingDocs.length > 0) {
+      await Promise.all(
+        existingDocs.map((id) => client.delete(id))
+      )
+      console.log(`🗑️ Deleted ${existingDocs.length} existing document(s)`)
+    } else {
+      console.log('ℹ️ No existing documents found')
     }
 
-    // Create new document
-    const created = await client.create(doc)
-    console.log('Membership info seeded:', created._id)
-  } catch (err) {
-    console.error('Error seeding membership info:', err)
+    console.log('🌱 Seeding fresh Membership Info singleton...')
+
+    // 2️⃣ Create fresh singleton
+    const result = await client.create({
+      _type: 'membershipInfo',
+      _id: 'membershipInfo', // MATCH your deskStructure documentId
+
+      // Hero Section
+      title: 'Join PCCI Today!',
+      tagline: 'Empowering businesses, connecting leaders, shaping the future.',
+      description:
+        'Connect with industry leaders, influence policy, and grow your enterprise with the Philippine Chamber of Commerce and Industry - Las Piñas.',
+
+      // Qualifications
+      qualificationsTitle: 'Membership Qualifications',
+      qualifications: [
+        {
+          _type: 'qualification',
+          _key: 'qual1',
+          title: 'Business Registration',
+          description:
+            'Your business must be officially registered and in good standing.',
+          icon: 'Building2',
+        },
+        {
+          _type: 'qualification',
+          _key: 'qual2',
+          title: 'Active Operations',
+          description:
+            'Your business should be actively operating for at least 1 year.',
+          icon: 'UserCheck',
+        },
+        {
+          _type: 'qualification',
+          _key: 'qual3',
+          title: 'Financial Capacity',
+          description:
+            'Demonstrate the financial capacity to sustain membership dues.',
+          icon: 'ShieldCheck',
+        },
+        {
+          _type: 'qualification',
+          _key: 'qual4',
+          title: 'Industry Alignment',
+          description:
+            'Be in an industry aligned with PCCI objectives and vision.',
+          icon: 'Briefcase',
+        },
+      ],
+
+      // Requirements
+      requirementsTitle: 'Documentary Requirements',
+      requirements: [
+        'Copy of Business Registration (SEC/DTI)',
+        'Latest Financial Statement (Last 2 years)',
+        'Certificate of Good Standing',
+        'Proof of Business Address',
+        'Government-issued ID of Business Owner',
+        'Board Resolution or Authorization Letter',
+      ],
+      requirementsNote:
+        'All documents must be submitted in PDF format. Original copies may be requested for verification.',
+
+      // Process
+      processTitle: 'Application Process',
+      processDescription:
+        'Submit your documents, pay the membership fee, and wait for verification by our team. The entire process typically takes 5–10 business days.',
+
+      // Bank Details
+      bankDetailsTitle: 'Bank Details for Payment',
+      bankName: 'Banco de Oro (BDO)',
+      bankBranch: 'Arnaiz San Lorenzo Branch',
+      accountName:
+        'Philippine Chamber of Commerce and Industry – Las Piñas City, Inc.',
+    })
+
+    console.log('✅ Membership Info seeded successfully:', result._id)
+  } catch (error) {
+    console.error('❌ Error seeding Membership Info:', error)
+    process.exit(1)
   }
 }
 

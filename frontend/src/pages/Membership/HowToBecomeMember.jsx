@@ -34,9 +34,20 @@ export default function HowToBecomeMember() {
       title,
       tagline,
       description,
-      heroBackgroundImage,
+      heroBackgroundImage {
+        asset -> {
+          _id,
+          url
+        },
+        hotspot,
+        crop
+      },
       qualificationsTitle,
-      qualifications[]{title, description, icon},
+      qualifications[]{
+        title,
+        description,
+        icon
+      },
       requirementsTitle,
       requirements,
       requirementsNote,

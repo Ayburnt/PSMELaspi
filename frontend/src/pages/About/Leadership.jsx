@@ -53,12 +53,12 @@ export default function Leadership() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-slate-50 font-sans">
+    <div className="min-h-screen mb-10 bg-slate-50 font-sans">
       <TopBar />
       <Navbar />
 
       {/* Leadership Grid */}
-      <div className="py-14 bg-white">
+      <div className="py-14 bg-white  mb-20">
         <div className="container mx-auto px-6">
           <motion.div 
             initial="hidden"
@@ -91,7 +91,7 @@ export default function Leadership() {
                 <div className="relative mb-6 overflow-hidden rounded-xl h-72 bg-slate-200">
                   {leader?.image ? (
                     <img 
-                      src={urlFor(leader.image).width(600).height(450).url()} 
+                      src={urlFor(leader.image).width(600).height(600).url()} 
                       alt={leader.name}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                     />
