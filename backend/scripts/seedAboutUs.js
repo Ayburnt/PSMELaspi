@@ -1,20 +1,51 @@
-import 'dotenv/config'   // Load environment variables from .env
+import 'dotenv/config'
 import { createClient } from '@sanity/client'
 
 const client = createClient({
   projectId: '2svpsi6g',
   dataset: 'production',
   useCdn: false,
-  token: process.env.SANITY_TOKEN, // now picked up from .env
+  token: process.env.SANITY_TOKEN,
   apiVersion: '2024-01-01',
 })
 
 async function seedAboutUs() {
   try {
-    // Create or update the singleton About Us document
-    const result = await client.createOrReplace({
+    // First, let's upload placeholder images
+    console.log('📤 Uploading images...')
+    
+    // Upload Who We Are image
+    const whoWeAreImageResponse = await fetch(
+      'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=2032&auto=format&fit=crop'
+    )
+    const whoWeAreImageBuffer = await whoWeAreImageResponse.arrayBuffer()
+    const whoWeAreImageAsset = await client.assets.upload('image', Buffer.from(whoWeAreImageBuffer), {
+      filename: 'who-we-are.jpg',
+    })
+
+    // Upload Hero background image
+    const heroImageResponse = await fetch(
+      'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop'
+    )
+    const heroImageBuffer = await heroImageResponse.arrayBuffer()
+    const heroImageAsset = await client.assets.upload('image', Buffer.from(heroImageBuffer), {
+      filename: 'hero-background.jpg',
+    })
+
+    console.log('✅ Images uploaded successfully')
+
+    // Delete existing document first
+    try {
+      await client.delete('aboutUs-singleton')
+      console.log('🗑️ Deleted existing document')
+    } catch (e) {
+      // Document doesn't exist, that's ok
+    }
+
+    // Create the singleton About Us document
+    const result = await client.create({
       _type: 'aboutUs',
-      _id: 'aboutUs-singleton', // Fixed ID for singleton
+      _id: 'aboutUs-singleton',
 
       // Who We Are Section
       whoWeAreTitle: 'Who We Are',
@@ -22,6 +53,13 @@ async function seedAboutUs() {
         'The Philippine Chamber of Commerce and Industry (PCCI) Las Piñas City, Inc. is a non-stock, non-profit, non-government business organization.',
       whoWeAreDescriptionText:
         'We are comprised of small, medium, and large enterprises representing various sectors of business, all working together to foster a healthier Philippine economy and improve the viability of business in the community.',
+      whoWeAreImage: {
+        _type: 'image',
+        asset: {
+          _type: 'reference',
+          _ref: whoWeAreImageAsset._id,
+        },
+      },
       affiliationTitle: 'Trusted Affiliation',
       affiliationText:
         'PCCI Las Piñas City Inc. is a proud affiliate organization of the national Philippine Chamber of Commerce and Industry (PCCI).',
@@ -38,43 +76,71 @@ async function seedAboutUs() {
       thrustsTitle: 'Organizational Thrusts',
       thrustsSubtitle:
         'To operationalize our MISSION and VISION, PCCI adopts the following strategic thrusts:',
-     thrusts: [
-  {
-    _key: 'thrust1',
-    title: 'MSME Support',
-    description:
-      'Steadfast support for the promotion and growth of micro, small and medium enterprises nationwide.',
-    icon: 'Users',
-  },
-  {
-    _key: 'thrust2',
-    title: 'Policy Reform',
-    description:
-      'Pioneer policy reform initiatives to improve the business climate and sustain socio-economic development.',
-    icon: 'Scale',
-  },
-  {
-    _key: 'thrust3',
-    title: 'Global Networking',
-    description:
-      'Spearhead national and international networking through business matching, trade missions, and information sharing.',
-    icon: 'Globe',
-  },
-  {
-    _key: 'thrust4',
-    title: 'Capability Building',
-    description: 'Support capability building for local chambers and industry associations.',
-    icon: 'Building2',
-  },
-],
+      thrusts: [
+        {
+          _key: 'thrust1',
+          title: 'MSME Support',
+          description:
+            'Steadfast support for the promotion and growth of micro, small and medium enterprises nationwide.',
+          icon: 'Users',
+        },
+        {
+          _key: 'thrust2',
+          title: 'Policy Reform',
+          description:
+            'Pioneer policy reform initiatives to improve the business climate and sustain socio-economic development.',
+          icon: 'Scale',
+        },
+        {
+          _key: 'thrust3',
+          title: 'Global Networking',
+          description:
+            'Spearhead national and international networking through business matching, trade missions, and information sharing.',
+          icon: 'Globe',
+        },
+        {
+          _key: 'thrust4',
+          title: 'Capability Building',
+          description:
+            'Support capability building for local chambers and industry associations.',
+          icon: 'Building2',
+        },
+      ],
 
       // Hero Section
       heroBadgeText: 'Las Piñas City Chapter',
+      heroBackgroundImage: {
+        _type: 'image',
+        asset: {
+          _type: 'reference',
+          _ref: heroImageAsset._id,
+        },
+      },
     })
 
     console.log('✅ About Us content seeded successfully:', result._id)
+    console.log('📋 Document created with all fields populated')
+    
+    // Verify the data was written
+    const verify = await client.fetch(`*[_id == "aboutUs-singleton"][0]{
+      whoWeAreTitle,
+      whoWeAreMainText,
+      whoWeAreDescriptionText,
+      affiliationText,
+      visionStatement,
+      missionStatement,
+      thrustsSubtitle,
+      "thrustsCount": count(thrusts),
+      "hasWhoWeAreImage": defined(whoWeAreImage),
+      "hasHeroImage": defined(heroBackgroundImage)
+    }`)
+    
+    console.log('\n📊 Verification:')
+    console.log(JSON.stringify(verify, null, 2))
+    
   } catch (error) {
-    console.error('❌ Error seeding About Us content:', error.message)
+    console.error('❌ Error seeding About Us content:', error)
+    console.error('Error details:', error.message)
     process.exit(1)
   }
 }

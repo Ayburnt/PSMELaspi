@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { MapPin, Phone, Mail, Clock, Send } from 'lucide-react';
 import Navbar from '../../components/layout/Navbar';
 import Footer from '../../components/layout/Footer';
 import TopBar from '../../components/layout/TopBar';
+import { client } from '../../sanityClient';
 
 const containerVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -29,6 +30,24 @@ export default function ContactUs() {
   });
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [settings, setSettings] = useState(null);
+
+  useEffect(() => {
+    const query = `*[_type == "siteSettings"][0]{
+      addressLine1,
+      addressLine2,
+      contactPhone,
+      contactPhone2,
+      contactEmail2,
+      businessHours,
+      googleMapsEmbedUrl
+    }`;
+
+    client
+      .fetch(query)
+      .then((data) => setSettings(data))
+      .catch((err) => console.error('Error fetching site settings:', err));
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -75,13 +94,13 @@ export default function ContactUs() {
           className="grid lg:grid-cols-2 gap-8 mb-12"
         >
           
-          {/* Left Side: Map Section (Your Map Integrated Here) */}
+          {/* Left Side: Map Section */}
           <motion.div 
             variants={itemVariants} 
             className="h-full min-h-[400px] lg:min-h-full bg-slate-200 rounded-3xl overflow-hidden shadow-lg border border-gray-100"
           >
             <iframe 
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15455.91361967532!2d120.99170295541992!3d14.428408100000006!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397d1e8304f75a1%3A0x1c68b907ad58778b!2sHerkings%20Corporation!5e0!3m2!1sen!2sph!4v1765593275807!5m2!1sen!2sph" 
+              src={settings?.googleMapsEmbedUrl || "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15455.91361967532!2d120.99170295541992!3d14.428408100000006!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397d1e8304f75a1%3A0x1c68b907ad58778b!2sHerkings%20Corporation!5e0!3m2!1sen!2sph!4v1765593275807!5m2!1sen!2sph"}
               className="w-full h-full border-0" 
               allowFullScreen="" 
               loading="lazy" 
@@ -178,8 +197,8 @@ export default function ContactUs() {
             </div>
             <h3 className="text-lg font-bold text-slate-900 mb-2">Address</h3>
             <p className="text-slate-600 text-sm leading-relaxed">
-              Herkings Corporation<br />
-              Las Piñas City, Philippines
+              {settings?.addressLine1 || 'Herkings Corporation'}<br />
+              {settings?.addressLine2 || 'Las Piñas City, Philippines'}
             </p>
           </div>
 
@@ -190,8 +209,12 @@ export default function ContactUs() {
             </div>
             <h3 className="text-lg font-bold text-slate-900 mb-2">Phone</h3>
             <div className="flex flex-col gap-1 text-sm">
-              <a href="tel:+63XXXXXXXX" className="text-slate-600 hover:text-blue-600 transition">+63 (XXX) XXXX</a>
-              <a href="tel:+63XXXXXXXX" className="text-slate-600 hover:text-blue-600 transition">+63 (XXX) XXXX</a>
+              {settings?.contactPhone && (
+                <a href={`tel:${settings.contactPhone}`} className="text-slate-600 hover:text-blue-600 transition">{settings.contactPhone}</a>
+              )}
+              {settings?.contactPhone2 && (
+                <a href={`tel:${settings.contactPhone2}`} className="text-slate-600 hover:text-blue-600 transition">{settings.contactPhone2}</a>
+              )}
             </div>
           </div>
 
@@ -202,7 +225,7 @@ export default function ContactUs() {
             </div>
             <h3 className="text-lg font-bold text-slate-900 mb-2">Email</h3>
             <div className="flex flex-col gap-1 text-sm">
-              <a href="mailto:info@pccilaspinas.org" className="text-slate-600 hover:text-blue-600 transition truncate">info@pccilaspinas.org</a>
+              <a href={`mailto:${settings?.contactEmail2 || 'info@pccilaspinas.org'}`} className="text-slate-600 hover:text-blue-600 transition truncate">{settings?.contactEmail2 || 'info@pccilaspinas.org'}</a>
             </div>
           </div>
 
@@ -212,10 +235,7 @@ export default function ContactUs() {
               <Clock size={24} />
             </div>
             <h3 className="text-lg font-bold text-slate-900 mb-2">Business Hours</h3>
-            <p className="text-slate-600 text-sm">
-              Mon - Fri: 9:00 AM - 5:00 PM<br />
-              Sat - Sun: Closed
-            </p>
+            <p className="text-slate-600 text-sm" dangerouslySetInnerHTML={{ __html: settings?.businessHours?.replace(/\n/g, '<br />') || 'Mon - Fri: 9:00 AM - 5:00 PM<br />Sat - Sun: Closed' }} />
           </div>
 
         </motion.div>

@@ -1,15 +1,35 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
+import { client, urlFor } from "../../sanityClient";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [membershipOpen, setMembershipOpen] = useState(false); // For desktop dropdown
-  const [mobileMembershipOpen, setMobileMembershipOpen] = useState(false); // For mobile dropdown
-  const [eventsOpen, setEventsOpen] = useState(false); // For desktop events dropdown
-  const [mobileEventsOpen, setMobileEventsOpen] = useState(false); // For mobile events dropdown
-  const [aboutOpen, setAboutOpen] = useState(false); // For desktop about dropdown
-  const [mobileAboutOpen, setMobileAboutOpen] = useState(false); // For mobile about dropdown
+  const [membershipOpen, setMembershipOpen] = useState(false);
+  const [mobileMembershipOpen, setMobileMembershipOpen] = useState(false);
+  const [eventsOpen, setEventsOpen] = useState(false);
+  const [mobileEventsOpen, setMobileEventsOpen] = useState(false);
+  const [aboutOpen, setAboutOpen] = useState(false);
+  const [mobileAboutOpen, setMobileAboutOpen] = useState(false);
+  const [settings, setSettings] = useState(null);
+
+  useEffect(() => {
+    const query = `*[_type == "siteSettings"][0]{
+      logo {
+        asset -> {
+          _id,
+          url
+        }
+      },
+      organizationName,
+      organizationSubtitle
+    }`;
+
+    client
+      .fetch(query)
+      .then((data) => setSettings(data))
+      .catch((err) => console.error('Error fetching site settings:', err));
+  }, []);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -26,17 +46,25 @@ export default function Navbar() {
             onClick={scrollToTop}
             className="flex items-center gap-3"
           >
-            <img
-              src="/pcci-logo.png"
-              alt="PCCI Las Piñas Logo"
-              className="w-12 h-12 rounded-full border-2 border-yellow-500 shadow-sm object-cover"
-            />
+            {settings?.logo ? (
+              <img
+                src={urlFor(settings.logo).width(100).height(100).url()}
+                alt={`${settings.organizationName} Logo`}
+                className="w-12 h-12 rounded-full border-2 border-yellow-500 shadow-sm object-cover"
+              />
+            ) : (
+              <img
+                src="/pcci-logo.png"
+                alt="PCCI Las Piñas Logo"
+                className="w-12 h-12 rounded-full border-2 border-yellow-500 shadow-sm object-cover"
+              />
+            )}
             <div className="leading-tight">
               <h1 className="text-2xl font-bold text-gray-800 tracking-tight">
-                PCCI
+                {settings?.organizationName || "PCCI"}
               </h1>
               <span className="text-xs font-semibold text-gray-500 tracking-widest uppercase">
-                Las Piñas City
+                {settings?.organizationSubtitle || "Las Piñas City"}
               </span>
             </div>
           </Link>

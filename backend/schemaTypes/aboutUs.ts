@@ -3,7 +3,7 @@ import { HomeIcon } from '@sanity/icons'
 
 export default defineType({
   name: 'aboutUs',
-  title: 'About Us Content',
+  title: 'About Us',
   type: 'document',
   icon: HomeIcon,
   // Singleton document - only one exists
@@ -12,7 +12,7 @@ export default defineType({
   preview: {
     prepare() {
       return {
-        title: 'About Us Content',
+        title: 'About Us',
         subtitle: 'Singleton document – only one exists',
       }
     },

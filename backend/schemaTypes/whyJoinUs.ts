@@ -3,20 +3,14 @@ import { HeartIcon } from '@sanity/icons'
 
 export default defineType({
   name: 'whyJoinUs',
-  title: 'Why Join Us Content',
+  title: 'Why Join Us',
   type: 'document',
   icon: HeartIcon,
   // @ts-expect-error Sanity allows this property for action control on singletons
   __experimental_actions: ['update', 'publish'],
   preview: {
-    select: {
-      title: 'heroTitle',
-    },
-    prepare({title}) {
-      return {
-        title: title || 'Why Join Us Content',
-        subtitle: 'Singleton document – only one exists',
-      }
+    prepare() {
+      return { title: 'Why Join Us', subtitle: 'Singleton document – only one exists' }
     },
   },
   fields: [
