@@ -1,6 +1,7 @@
 import {defineConfig} from 'sanity'
 import {structureTool} from 'sanity/structure'
 import {visionTool} from '@sanity/vision'
+import {colorInput} from '@sanity/color-input'
 import {schemaTypes} from './schemaTypes'
 
 export default defineConfig({
@@ -9,10 +10,11 @@ export default defineConfig({
   projectId: '2svpsi6g',
   dataset: 'production',
   plugins: [
+    colorInput(),
     structureTool({
       structure: (S) =>
         S.list()
-          .title('Content')
+          .title('Admin')
           .items([
             // Content Management Section
             S.listItem()
@@ -46,16 +48,16 @@ export default defineConfig({
             S.divider(),
             
             // Events & News Section
-            S.documentTypeListItem('event').title('Events'),
-            S.documentTypeListItem('news').title('News'),
+            S.documentTypeListItem('event').title('Event Management'),
+            S.documentTypeListItem('news').title('News Management'),
             
             S.divider(),
             
             // Members Section
-            S.documentTypeListItem('member').title('Members'),
+            S.documentTypeListItem('member').title('Members Directory'),
           ]),
     }),
-    visionTool()
+    // Remove visionTool() to hide the Vision tab
   ],
   schema: {
     types: schemaTypes,

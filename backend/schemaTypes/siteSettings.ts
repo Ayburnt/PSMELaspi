@@ -129,5 +129,31 @@ export default defineType({
       initialValue:
         'A non-stock, non-profit organization dedicated to the advancement of the business community in Las Piñas City.',
     }),
+
+     // === THEME COLORS ===
+    defineField({
+      name: 'topBarBgColor',
+      title: 'Top Bar Background Color',
+      type: 'color',
+      description: 'Background color for the top navigation bar',
+      options: {
+        disableAlpha: true,
+      },
+      initialValue: {
+        hex: '#1e3a8a',
+      },
+    }),
+    defineField({
+      name: 'footerBgColor',
+      title: 'Footer Background Color',
+      type: 'color',
+      description: 'Background color for the footer section',
+      options: {
+        disableAlpha: true,
+      },
+      initialValue: {
+        hex: '#020617',
+      },
+    }),
   ],
 })

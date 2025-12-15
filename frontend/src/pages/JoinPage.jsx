@@ -83,83 +83,80 @@ const JoinPage = () => {
         ) : (
           /* ================= OVERVIEW VIEW ================= */
           <div className="space-y-12">
-          {/* 1. APPLICATION PROCESS (MODERN OVERLAY STYLE) */}
-<section className="relative bg-white rounded-2xl shadow-2xl p-10 md:p-16 overflow-hidden">
+            {/* 1. APPLICATION PROCESS (MODERN OVERLAY STYLE) */}
+            <section className="relative bg-white rounded-2xl shadow-2xl p-10 md:p-16 overflow-hidden">
+              {/* Soft background glow */}
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-indigo-100 opacity-70 pointer-events-none" />
 
-  {/* Soft background glow */}
-  <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-indigo-100 opacity-70 pointer-events-none" />
+              <div className="relative z-10">
+                {/* Header */}
+                <div className="text-center max-w-3xl mx-auto mb-16">
+                  <span className="inline-block mb-4 px-5 py-1.5 rounded-full bg-blue-100 text-blue-800 text-sm font-semibold tracking-wide">
+                    Application Process
+                  </span>
+                  <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">
+                    How to Become a PCCI-Manila Member
+                  </h2>
+                  <p className="text-gray-600 text-lg">
+                    A clear, guided process designed for application.
+                  </p>
+                </div>
 
-  <div className="relative z-10">
-    {/* Header */}
-    <div className="text-center max-w-3xl mx-auto mb-16">
-      <span className="inline-block mb-4 px-5 py-1.5 rounded-full bg-blue-100 text-blue-800 text-sm font-semibold tracking-wide">
-        Application Process
-      </span>
-      <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">
-        How to Become a PCCI-Manila Member
-      </h2>
-      <p className="text-gray-600 text-lg">
-        A clear, guided process designed for application.
-      </p>
-    </div>
+                {/* Steps */}
+                <div className="relative grid md:grid-cols-4 gap-10">
+                  {/* MAIN PROGRESS LINE */}
+                  <div className="hidden md:block absolute top-[30px] left-0 w-full h-[3px] bg-gradient-to-r from-blue-200 via-blue-500 to-indigo-400 rounded-full" />
 
-    {/* Steps */}
-    <div className="relative grid md:grid-cols-4 gap-10">
+                  {[
+                    {
+                      step: "01",
+                      title: "Submit Application",
+                      desc: "Complete the online membership form with your business details.",
+                    },
+                    {
+                      step: "02",
+                      title: "Application Review",
+                      desc: "Our membership committee evaluates your submission.",
+                    },
+                    {
+                      step: "03",
+                      title: "Payment Process",
+                      desc: "Receive your invoice and payment instructions.",
+                    },
+                    {
+                      step: "04",
+                      title: "Welcome Onboard",
+                      desc: "Get your certificate and unlock member benefits.",
+                    },
+                  ].map((item, idx) => (
+                    <div
+                      key={idx}
+                      className="relative flex flex-col items-center text-center"
+                    >
+                      {/* STEP NODE */}
+                      <div className="relative z-10">
+                        <div className="w-14 h-14 rounded-full bg-blue-900 text-white flex items-center justify-center font-bold text-lg shadow-xl ring-4 ring-white">
+                          {item.step}
+                        </div>
 
-      {/* MAIN PROGRESS LINE */}
-      <div className="hidden md:block absolute top-[30px] left-0 w-full h-[3px] bg-gradient-to-r from-blue-200 via-blue-500 to-indigo-400 rounded-full" />
+                        {/* Glow */}
+                        <div className="absolute inset-0 rounded-full bg-blue-500/30 blur-xl -z-10" />
+                      </div>
 
-      {[
-        {
-          step: '01',
-          title: 'Submit Application',
-          desc: 'Complete the online membership form with your business details.',
-        },
-        {
-          step: '02',
-          title: 'Application Review',
-          desc: 'Our membership committee evaluates your submission.',
-        },
-        {
-          step: '03',
-          title: 'Payment Process',
-          desc: 'Receive your invoice and payment instructions.',
-        },
-        {
-          step: '04',
-          title: 'Welcome Onboard',
-          desc: 'Get your certificate and unlock member benefits.',
-        },
-      ].map((item, idx) => (
-        <div
-          key={idx}
-          className="relative flex flex-col items-center text-center"
-        >
-          {/* STEP NODE */}
-          <div className="relative z-10">
-            <div className="w-14 h-14 rounded-full bg-blue-900 text-white flex items-center justify-center font-bold text-lg shadow-xl ring-4 ring-white">
-              {item.step}
-            </div>
-
-            {/* Glow */}
-            <div className="absolute inset-0 rounded-full bg-blue-500/30 blur-xl -z-10" />
-          </div>
-
-          {/* CARD */}
-          <div className="mt-8 bg-white rounded-xl p-6 shadow-lg border border-gray-100 max-w-xs">
-            <h3 className="font-bold text-gray-900 mb-2 text-lg">
-              {item.title}
-            </h3>
-            <p className="text-sm text-gray-500 leading-relaxed">
-              {item.desc}
-            </p>
-          </div>
-        </div>
-      ))}
-    </div>
-  </div>
-</section>
-
+                      {/* CARD */}
+                      <div className="mt-8 bg-white rounded-xl p-6 shadow-lg border border-gray-100 max-w-xs">
+                        <h3 className="font-bold text-gray-900 mb-2 text-lg">
+                          {item.title}
+                        </h3>
+                        <p className="text-sm text-gray-500 leading-relaxed">
+                          {item.desc}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
 
             <div className="grid lg:grid-cols-2 gap-8">
               {/* 3. TESTIMONIALS */}

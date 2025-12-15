@@ -17,6 +17,7 @@
     "sanity"
   ],
   "dependencies": {
+    "@sanity/color-input": "^5.0.4",
     "@sanity/structure": "^2.36.2",
     "@sanity/vision": "^4.21.1",
     "dotenv": "^17.2.3",
