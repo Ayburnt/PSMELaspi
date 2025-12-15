@@ -10,7 +10,8 @@ export default function TopBar() {
       contactPhone,
       contactEmail,
       facebookUrl,
-      organizationSubtitle
+      organizationSubtitle,
+      topBarBgColor
     }`;
 
     client
@@ -21,8 +22,10 @@ export default function TopBar() {
 
   if (!settings) return null;
 
+  const bgColor = settings.topBarBgColor?.hex || '#1e3a8a';
+
   return (
-    <div className="bg-blue-900 text-white text-xs py-2 w-full relative z-50">
+    <div className="text-white text-xs py-2 w-full relative z-50" style={{ backgroundColor: bgColor }}>
       <div className="max-w-7xl mx-auto px-4 flex justify-between items-center">
         <div className="flex gap-4">
           <span className="flex items-center gap-2"><Phone size={14} /> {settings.contactPhone}</span>

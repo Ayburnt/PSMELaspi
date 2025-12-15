@@ -166,7 +166,7 @@ export default function UpcomingEvents() {
                     >
                       {event.registrationOpen ? (
                          <>
-                           Register <Ticket size={16} />
+                           View
                          </>
                       ) : (
                          'Closed'

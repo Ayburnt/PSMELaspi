@@ -90,16 +90,60 @@ export default defineType({
     }),
     defineField({
       name: 'keyServices',
-      title: 'Key Services',
+      title: 'Services',
       type: 'array',
       of: [{type: 'string'}],
       validation: (rule) => rule.required().min(1),
+    }),
+    defineField({
+      name: 'products',
+      title: 'Products',
+      type: 'array',
+      of: [{type: 'string'}],
+      description: 'List of products offered by the company',
     }),
     defineField({
       name: 'memberSince',
       title: 'Member Since (Year)',
       type: 'string',
       description: 'Year when they joined (e.g., 2020)',
+    }),
+    defineField({
+      name: 'socialMedia',
+      title: 'Social Media Links',
+      type: 'object',
+      fields: [
+        {
+          name: 'facebook',
+          title: 'Facebook',
+          type: 'url',
+          description: 'Full Facebook page URL',
+        },
+        {
+          name: 'linkedin',
+          title: 'LinkedIn',
+          type: 'url',
+          description: 'Full LinkedIn page URL',
+        },
+        {
+          name: 'instagram',
+          title: 'Instagram',
+          type: 'url',
+          description: 'Full Instagram profile URL',
+        },
+        {
+          name: 'twitter',
+          title: 'X (Twitter)',
+          type: 'url',
+          description: 'Full X/Twitter profile URL',
+        },
+        {
+          name: 'viber',
+          title: 'Viber',
+          type: 'string',
+          description: 'Viber phone number or username',
+        },
+      ],
     }),
     defineField({
       name: 'keyRepresentative',

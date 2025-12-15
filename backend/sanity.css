@@ -1,0 +1,13 @@
+/* Hide top-right utility icons */
+[data-ui="Navbar"] button[aria-label*="Tasks"],
+[data-ui="Navbar"] button[aria-label*="trial"],
+[data-ui="Navbar"] [data-ui="MenuButton"][aria-label*="Drafts"],
+[data-ui="Navbar"] button[title*="help"],
+[data-ui="Navbar"] button[title*="notifications"] {
+  display: none !important;
+}
+
+/* Hide the trial banner if it appears */
+[data-ui="TrialBanner"] {
+  display: none !important;
+}

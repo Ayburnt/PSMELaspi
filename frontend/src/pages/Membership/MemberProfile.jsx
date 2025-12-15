@@ -1,6 +1,7 @@
 import { useParams, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { ArrowLeft, Building2, Mail, Phone, MapPin, Globe, Clock, User, Briefcase, Tag, ExternalLink, Loader2 } from 'lucide-react';
+import { ArrowLeft, Building2, Mail, Phone, MapPin, Globe, Clock, User, Briefcase, Tag, ExternalLink, Loader2, Package, Facebook, Linkedin, Instagram, MessageCircle } from 'lucide-react';
+import { FaXTwitter, FaViber } from 'react-icons/fa6';
 import { client, urlFor } from '../../sanityClient';
 import Navbar from '../../components/layout/Navbar';
 import Footer from '../../components/layout/Footer';
@@ -26,11 +27,19 @@ export default function MemberProfile() {
           overview,
           location,
           keyServices,
+          products,
           email,
           phone,
           website,
           memberSince,
           logo,
+          socialMedia {
+            facebook,
+            linkedin,
+            instagram,
+            twitter,
+            viber
+          },
           keyRepresentative {
             name,
             position,
@@ -285,7 +294,7 @@ export default function MemberProfile() {
             <div className="bg-white rounded-2xl shadow-xl border border-slate-100 p-8">
               <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center">
                 <Tag className="mr-3 text-blue-700" size={28} />
-                Key Services
+                 Services
               </h2>
               <div className="grid md:grid-cols-2 gap-3">
                 {member.keyServices.map((service, index) => (
@@ -296,6 +305,24 @@ export default function MemberProfile() {
                 ))}
               </div>
             </div>
+
+            {/* Products */}
+            {member.products && member.products.length > 0 && (
+              <div className="bg-white rounded-2xl shadow-xl border border-slate-100 p-8">
+                <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                  <Package className="mr-3 text-blue-700" size={28} />
+                  Products
+                </h2>
+                <div className="grid md:grid-cols-2 gap-3">
+                  {member.products.map((product, index) => (
+                    <div key={index} className="flex items-center p-4 bg-gradient-to-r from-green-50 to-slate-50 rounded-lg border border-green-100">
+                      <div className="w-2 h-2 bg-green-600 rounded-full mr-3"></div>
+                      <span className="text-slate-700 font-medium">{product}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
           </div>
 
@@ -354,6 +381,70 @@ export default function MemberProfile() {
                     </a>
                   </div>
                 </div>
+
+                {/* Social Media Links */}
+                {member.socialMedia && (
+                  Object.values(member.socialMedia).some(val => val) && (
+                    <div className="pt-4 border-t border-slate-100">
+                      <p className="text-xs text-slate-500 font-medium uppercase mb-3">Connect With Us</p>
+                      <div className="flex flex-wrap gap-2">
+                        {member.socialMedia.facebook && (
+                          <a 
+                            href={member.socialMedia.facebook} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="p-2 bg-blue-50 hover:bg-blue-600 text-blue-600 hover:text-white rounded-lg transition-all"
+                            title="Facebook"
+                          >
+                            <Facebook size={18} />
+                          </a>
+                        )}
+                        {member.socialMedia.linkedin && (
+                          <a 
+                            href={member.socialMedia.linkedin} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="p-2 bg-blue-50 hover:bg-blue-700 text-blue-700 hover:text-white rounded-lg transition-all"
+                            title="LinkedIn"
+                          >
+                            <Linkedin size={18} />
+                          </a>
+                        )}
+                        {member.socialMedia.instagram && (
+                          <a 
+                            href={member.socialMedia.instagram} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="p-2 bg-pink-50 hover:bg-pink-600 text-pink-600 hover:text-white rounded-lg transition-all"
+                            title="Instagram"
+                          >
+                            <Instagram size={18} />
+                          </a>
+                        )}
+                        {member.socialMedia.twitter && (
+                          <a 
+                            href={member.socialMedia.twitter} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="p-2 bg-slate-50 hover:bg-slate-900 text-slate-700 hover:text-white rounded-lg transition-all"
+                            title="X (Twitter)"
+                          >
+                            <FaXTwitter size={18} />
+                          </a>
+                        )}
+                        {member.socialMedia.viber && (
+                          <a 
+                            href={`viber://chat?number=${member.socialMedia.viber.replace(/\D/g, '')}`}
+                            className="p-2 bg-purple-50 hover:bg-purple-600 text-purple-600 hover:text-white rounded-lg transition-all"
+                            title="Viber"
+                          >
+                            <FaViber size={18} />
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  )
+                )}
 
                 {member.website && (
                   <div className="flex items-start">
