@@ -1,6 +1,7 @@
 // backend/schemaTypes/history.js
 
-import { Calendar, BookOpen, Clock, ListOrdered, Briefcase, Zap, Star } from 'lucide-react';
+// ADD 'Users' to the import list
+import { Calendar, BookOpen, Clock, ListOrdered, Briefcase, Zap, Star, Users } from 'lucide-react';
 
 export default {
   // Document configuration
@@ -58,7 +59,23 @@ export default {
               fields: [
                 { name: 'year', title: 'Year/Date', type: 'string', description: 'e.g., "1995" or "Q3 2005"', validation: Rule => Rule.required() },
                 { name: 'description', title: 'Description', type: 'text', rows: 3, validation: Rule => Rule.required() },
-                { name: 'icon', title: 'Timeline Icon (Lucide)', type: 'string', options: { list: [ { title: 'Calendar', value: 'Calendar' }, { title: 'Lightning Bolt (Zap)', value: 'Zap' }, { title: 'Clock', value: 'Clock' }, { title: 'Briefcase', value: 'Briefcase' }, { title: 'Star', value: 'Star' }, ], layout: 'dropdown' }, initialValue: 'Clock' }
+                { 
+                  name: 'icon', 
+                  title: 'Timeline Icon (Lucide)', 
+                  type: 'string', 
+                  options: { 
+                    list: [ 
+                      { title: 'Calendar', value: 'Calendar' }, 
+                      { title: 'Lightning Bolt (Zap)', value: 'Zap' }, 
+                      { title: 'Clock', value: 'Clock' }, 
+                      { title: 'Briefcase', value: 'Briefcase' }, 
+                      { title: 'Star', value: 'Star' }, 
+                      { title: 'People (Users)', value: 'Users' }, // <--- NEW ICON ADDED HERE
+                    ], 
+                    layout: 'dropdown' 
+                  }, 
+                  initialValue: 'Clock' 
+                }
               ]
             }
           ],
