@@ -8,15 +8,17 @@ import aboutUs from './aboutUs'
 import { leadershipBoard } from './leadership'
 import hero from './hero'
 import siteSettings from './siteSettings'
+import history from './history' 
 
 export const schemaTypes = [
-	siteSettings,
-	hero,
-	aboutUs,
-	leadershipBoard,
-	event,
-	news,
-	member,
-	membershipInfo,
-	whyJoinUs,
+    siteSettings,
+    hero,
+    aboutUs,
+    history,
+    leadershipBoard,
+    event,
+    news,
+    member,
+    membershipInfo,
+    whyJoinUs,
 ]

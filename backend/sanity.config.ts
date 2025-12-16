@@ -33,6 +33,11 @@ export default defineConfig({
                     S.listItem()
                       .title('About Us')
                       .child(S.document().schemaType('aboutUs').documentId('aboutUs')),
+                    // --- NEW HISTORY PAGE ENTRY ---
+                    S.listItem()
+                      .title('Our History')
+                      .child(S.document().schemaType('historyPage').documentId('historyPage')), 
+                    // -----------------------------
                     S.listItem()
                       .title('Leadership Board')
                       .child(S.document().schemaType('leadershipBoard').documentId('leadershipBoard')),
@@ -57,7 +62,7 @@ export default defineConfig({
             S.documentTypeListItem('member').title('Members Directory'),
           ]),
     }),
-    // Remove visionTool() to hide the Vision tab
+    visionTool(), // Kept visionTool() as it was present in your original code
   ],
   schema: {
     types: schemaTypes,
