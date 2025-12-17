@@ -77,7 +77,7 @@ export default function AboutSection() {
             return (
               <div 
                 key={index} 
-                className="group relative bg-white rounded-xl p-6 h-full border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden"
+                className="group relative bg-white rounded-xl p-6 h-full border border-gray-400 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden"
               >
                 {/* 2. UI: Animated Top Gradient Border - Logo Green to Lighter Green */}
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#155333] to-green-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />

@@ -59,10 +59,13 @@ export default function Navbar() {
                 className="w-12 h-12 rounded-full border-2 border-yellow-500 shadow-sm object-cover"
               />
             )}
-            <div className="leading-tight">
+             <div className="leading-tight">
               <h1 className="text-2xl font-bold text-gray-800 tracking-tight">
-                {settings?.organizationName || "PCCI -"} {settings?.organizationSubtitle || "Las Piñas"}
+                {settings?.organizationName || "PCCI"}
               </h1>
+              <span className="text-xs font-semibold text-gray-500 tracking-widest uppercase">
+                {settings?.organizationSubtitle || "Las Piñas City"}
+              </span>
             </div>
 
           </Link>
