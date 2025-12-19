@@ -6,9 +6,6 @@ import NewsPost from "./pages/NewsPost";
 import NewsIndex from "./pages/NewsIndex";
 import useDynamicFavicon from "./hooks/useDynamicFavicon";
 
-// Admin Pages
-import AdminLogin from "./pages/AdminLogin";
-
 // Membership Pages
 import MembersDirectory from "./pages/Membership/MembersDirectory";
 import HowToBecomeMember from "./pages/Membership/HowToBecomeMember";
@@ -44,9 +41,6 @@ function AnimatedRoutes() {
     <Routes location={location} key={location.pathname}>
       <Route path="/" element={<HomePage />} />
       <Route path="/join" element={<JoinPage />} />
-
-      {/* Admin Routes */}
-      <Route path="/admin/login" element={<AdminLogin />} />
 
       {/* Membership Routes */}
       <Route path="/members-directory" element={<MembersDirectory />} />
