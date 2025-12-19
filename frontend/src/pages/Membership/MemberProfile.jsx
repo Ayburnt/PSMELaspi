@@ -18,7 +18,7 @@ export default function MemberProfile() {
     const fetchMember = async () => {
       try {
         setLoading(true);
-        const query = `*[_type == "member" && _id == $id][0] {
+        const query = `*[_type == "member" && slug.current == $id][0] {
           _id,
           company,
           membershipType,

@@ -20,6 +20,7 @@ export default function MembersDirectory() {
         setLoading(true);
         const query = `*[_type == "member" && status == "active"] | order(company asc) {
           _id,
+          "slug": slug.current,
           company,
           membershipType,
           category,
@@ -244,10 +245,10 @@ export default function MembersDirectory() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredMembers.map(member => {
               const isIndividual = member.membershipType.includes('Individual');
-              const memberId = member._id || member.id;
+              const memberSlug = member.slug || member._id || member.id;
               
               return (
-                <div key={memberId} className="group bg-white rounded-lg border border-slate-200 hover:border-green-300 hover:shadow-xl transition-all duration-300 flex flex-col h-full overflow-hidden relative">
+                <div key={member._id || member.id} className="group bg-white rounded-lg border border-slate-200 hover:border-green-300 hover:shadow-xl transition-all duration-300 flex flex-col h-full overflow-hidden relative">
                   
                   {/* Top Accent Line */}
                   <div className={`h-1 w-full ${isIndividual ? 'bg-emerald-500' : 'bg-green-800'}`}></div>
@@ -344,7 +345,7 @@ export default function MembersDirectory() {
                     )}
                     <div className="h-4 w-px bg-slate-300 mx-1"></div>
                     <Link 
-                      to={`/member/${memberId}`}
+                      to={`/member/${memberSlug}`}
                       className="text-sm font-semibold text-green-700 hover:text-green-900 flex items-center group/btn"
                     >
                       View Profile

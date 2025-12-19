@@ -23,6 +23,11 @@ import History from './pages/About/History';
 import Leadership from './pages/About/Leadership';
 import ContactUs from './pages/About/ContactUs';
 
+// Programs Pages
+import Programs from './pages/Programs/Programs';
+import Advocacy from './pages/Programs/Advocacy';
+import Services from './pages/Programs/Services';
+
 function AnimatedRoutes() {
   const location = useLocation();
   
@@ -50,7 +55,12 @@ function AnimatedRoutes() {
       <Route path="/events/past" element={<PastEvents />} />
       <Route path="/events/:slug" element={<EventPost />} />
 
-      {/* Events Routes */}
+      {/* Programs Routes */}
+      <Route path="/programs" element={<Programs />} />
+      <Route path="/programs/advocacy" element={<Advocacy />} />
+      <Route path="/programs/services" element={<Services />} />
+
+      {/* About Routes */}
       <Route path="/about/about-us" element={<AboutUs />} />
       <Route path="about/history" element={<History/>}/>
       <Route path="/about/leadership" element={<Leadership />} />
