@@ -110,9 +110,9 @@ export default function UpcomingEvents() {
         </div>
         <div className="p-3">
           <div className="grid grid-cols-7 gap-1 text-center mb-2">
-            {["S", "M", "T", "W", "T", "F", "S"].map((d) => (
+            {["S", "M", "T", "W", "T", "F", "S"].map((d, index) => (
               <span
-                key={d}
+                key={`day-${index}`}
                 className="text-[10px] font-black text-slate-400 uppercase"
               >
                 {d}
