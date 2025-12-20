@@ -115,7 +115,7 @@ export default function NewsIndex() {
               </div>
 
               <div className="flex items-center gap-3 w-full md:w-auto">
-                <div className="flex items-center gap-2 text-xs font-semibold text-gray-500 uppercase tracking-wide mr-2 hidden md:flex">
+                <div className="items-center gap-2 text-xs font-semibold text-gray-500 uppercase tracking-wide mr-2 hidden md:flex">
                   <Filter size={14} /> Filters:
                 </div>
                 
