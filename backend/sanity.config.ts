@@ -49,6 +49,9 @@ export default defineConfig({
                     S.listItem()
                       .title('Why Join Us')
                       .child(S.document().schemaType('whyJoinUs').documentId('whyJoinUs')),
+                    S.listItem()
+                      .title('Join Page')
+                      .child(S.document().schemaType('joinPage').documentId('joinPage')),
                   ])
               ),
 
