@@ -12,6 +12,7 @@ import history from './history'
 import partner from './partner'
 import advocacyPage from './advocacy'
 import joinPage from './joinPage'
+import servicesPage from './services'
 
 export const schemaTypes = [
     siteSettings,
@@ -22,6 +23,7 @@ export const schemaTypes = [
     partner,
     advocacyPage,
     joinPage,
+    servicesPage,
     event,
     news,
     member,
