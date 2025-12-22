@@ -45,7 +45,7 @@ const programTracks = [
 const impactSignals = [
   {
     label: "Active Members",
-    value: "500+",
+    value: "",
     detail: "Businesses represented in Las Piñas",
   },
   {

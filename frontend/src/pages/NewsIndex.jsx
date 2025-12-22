@@ -8,8 +8,7 @@ import {
   Image as ImageIcon,
   FileText,
   Filter,
-  Share2,
-  Newspaper
+  Share2
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import Navbar from "../components/layout/Navbar";
@@ -25,7 +24,6 @@ export default function NewsIndex() {
   const itemsPerPage = 6;
 
   useEffect(() => {
-    // Keep query logic identical
     const query = `*[_type == "news"] | order(date desc) {
       title,
       date,
@@ -71,37 +69,14 @@ export default function NewsIndex() {
       <TopBar />
       <Navbar />
 
-      {/* 1. MODERNIZED HEADER: Gradient + Cleaner Typography */}
-      <div className="bg-gradient-to-r from-[#144d30] to-[#0f3b24] relative overflow-hidden">
-        {/* Abstract Background Element */}
-        <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl"></div>
-        
-        <div className="max-w-7xl mx-auto px-6 py-16 relative z-10">
-          <div className="flex flex-col md:items-start">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-yellow-400 text-xs font-semibold uppercase tracking-wider mb-6 border border-white/10 backdrop-blur-sm">
-              <Newspaper size={14} /> 
-              <span>PCCI-Las Piñas Bulletin</span>
-            </div>
-            
-            <h1 className="text-3xl md:text-5xl font-bold text-white/90 tracking-tight mb-4 leading-tight">
-              News & Announcements
-            </h1>
-            
-            <p className="text-green-100 text-base max-w-2xl leading-relaxed">
-              Timely updates on chamber initiatives, legislative advocacy, and developments within the Las Piñas business community.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-6 py-12">
+      <div className="max-w-7xl mx-auto px-6 py-8">
         <div className="flex flex-col lg:flex-row gap-12">
           
-          {/* --- LEFT SIDE: MAIN NEWS ARCHIVE (66%) --- */}
-          {/* Swapped to left for better UX hierarchy */}
-          <div className="w-full lg:w-2/3 order-2 lg:order-1">
+          {/* --- MAIN NEWS ARCHIVE (66%) --- */}
+          {/* order-1 ensures this stays on TOP during mobile view */}
+          <div className="w-full lg:w-2/3 order-1 lg:order-1">
             
-            {/* Control Bar: Unified Filter Design */}
+            {/* Control Bar */}
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-8 flex flex-col md:flex-row gap-4 items-center justify-between">
               <div className="relative flex-grow w-full md:w-auto">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -153,7 +128,6 @@ export default function NewsIndex() {
                   key={i}
                   className="group bg-white rounded-lg border border-gray-200 overflow-hidden flex flex-col hover:shadow-lg hover:border-gray-300 transition-all duration-300"
                 >
-                  {/* Image Container */}
                   <div className="h-52 relative overflow-hidden bg-gray-100">
                     {item.image?.asset?.url ? (
                       <img
@@ -171,7 +145,6 @@ export default function NewsIndex() {
                     </div>
                   </div>
 
-                  {/* Content Container */}
                   <div className="p-6 flex flex-col flex-grow">
                     <div className="flex items-center gap-2 text-xs font-medium text-gray-500 mb-3">
                       <Calendar size={14} className="text-[#155333]" />
@@ -183,7 +156,7 @@ export default function NewsIndex() {
                     </h3>
 
                     <p className="text-gray-600 text-sm leading-relaxed line-clamp-3 mb-6">
-                      {item.description || "Click to read the full details regarding this official announcement from the chamber."}
+                      {item.description || "Click to read the full details regarding this official announcement."}
                     </p>
 
                     <div className="mt-auto flex items-center text-[#155333] font-semibold text-sm">
@@ -201,7 +174,6 @@ export default function NewsIndex() {
                   <FileText size={24} className="text-gray-400" />
                 </div>
                 <h3 className="text-lg font-semibold text-slate-800">No updates found</h3>
-                <p className="text-sm text-gray-500 mt-1">Try adjusting your filters or search terms.</p>
                 <button 
                   onClick={() => {setSearchTerm(""); setSelectedYear(""); setSelectedMonth("")}}
                   className="mt-4 text-sm text-[#155333] font-medium hover:underline"
@@ -217,7 +189,7 @@ export default function NewsIndex() {
                 <button
                   onClick={() => handlePageChange(currentPage - 1)}
                   disabled={currentPage === 1}
-                  className="p-2 rounded-md border border-gray-200 hover:bg-gray-50 text-gray-600 disabled:opacity-50 disabled:hover:bg-white transition-colors"
+                  className="p-2 rounded-md border border-gray-200 hover:bg-gray-50 text-gray-600 disabled:opacity-50 transition-colors"
                 >
                   <ChevronDown className="rotate-90" size={18} />
                 </button>
@@ -228,7 +200,7 @@ export default function NewsIndex() {
                     onClick={() => handlePageChange(idx + 1)}
                     className={`w-9 h-9 rounded-md text-sm font-semibold transition-all ${
                       currentPage === idx + 1
-                        ? "bg-[#155333] text-white shadow-md shadow-green-900/10"
+                        ? "bg-[#155333] text-white shadow-md"
                         : "bg-white border border-gray-200 text-gray-600 hover:bg-gray-50"
                     }`}
                   >
@@ -239,7 +211,7 @@ export default function NewsIndex() {
                 <button
                   onClick={() => handlePageChange(currentPage + 1)}
                   disabled={currentPage === totalPages}
-                  className="p-2 rounded-md border border-gray-200 hover:bg-gray-50 text-gray-600 disabled:opacity-50 disabled:hover:bg-white transition-colors"
+                  className="p-2 rounded-md border border-gray-200 hover:bg-gray-50 text-gray-600 disabled:opacity-50 transition-colors"
                 >
                   <ChevronDown className="-rotate-90" size={18} />
                 </button>
@@ -247,10 +219,9 @@ export default function NewsIndex() {
             )}
           </div>
 
-          {/* --- RIGHT SIDE: SIDEBAR (33%) --- */}
-          <aside className="w-full lg:w-1/3 order-1 lg:order-2 space-y-8">
-            
-            {/* Social Feed Widget */}
+          {/* --- SIDEBAR (33%) --- */}
+          {/* order-2 ensures this goes BELOW the news during mobile view */}
+          <aside className="w-full lg:w-1/3 order-2 lg:order-2 space-y-8">
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden sticky top-8">
               <div className="bg-gray-50 border-b border-gray-100 p-4 flex items-center justify-between">
                 <div className="flex items-center gap-2 text-slate-800 font-bold text-sm">
@@ -285,8 +256,6 @@ export default function NewsIndex() {
                 </a>
               </div>
             </div>
-
-            {/* Optional: Add another widget here like "Quick Links" or "Contact" if needed */}
           </aside>
 
         </div>
