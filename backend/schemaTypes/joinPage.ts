@@ -109,7 +109,8 @@ export default defineType({
                   stepNumber: 'stepNumber',
                   title: 'title',
                 },
-                prepare({ stepNumber, title }) {
+                prepare(selection) {
+                  const { stepNumber, title } = selection as Record<string, any>
                   return {
                     title: `${stepNumber}. ${title}`,
                   }
@@ -170,7 +171,8 @@ export default defineType({
                   name: 'name',
                   title: 'title',
                 },
-                prepare({ name, title }) {
+                prepare(selection) {
+                  const { name, title } = selection as Record<string, any>
                   return {
                     title: name,
                     subtitle: title,

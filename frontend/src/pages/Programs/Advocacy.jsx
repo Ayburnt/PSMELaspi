@@ -6,6 +6,7 @@ import {
   Download,
   Target,
   Quote,
+  Eye,
 } from "lucide-react";
 import { PortableText } from "@portabletext/react";
 import imageUrlBuilder from "@sanity/image-url";
@@ -107,6 +108,14 @@ export default function AdvocacyPage() {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+    } else {
+      alert("PDF not available.");
+    }
+  };
+
+  const handleViewPDF = (url) => {
+    if (url) {
+      window.open(url, '_blank', 'noopener,noreferrer');
     } else {
       alert("PDF not available.");
     }
@@ -217,15 +226,7 @@ export default function AdvocacyPage() {
                     {executiveSummary?.downloadAgendaLabel || 'Download 2025 Agenda (PDF)'}
                   </button>
                 )}
-                <button 
-                  onClick={handlePrint}
-                  className="flex items-center gap-3 text-sm font-semibold text-slate-600 hover:text-[#064e3b] group transition-colors"
-                >
-                  <span className="bg-slate-100 p-2 rounded group-hover:bg-[#064e3b] group-hover:text-white transition-colors">
-                    <Printer size={16} />
-                  </span>
-                  {executiveSummary?.printSummaryLabel || 'Print Summary'}
-                </button>
+               
               </div>
             </div>
             <div className="md:w-2/3">
@@ -243,12 +244,12 @@ export default function AdvocacyPage() {
           </div>
         </section>
 
-        {/* AGENDA GRID - ALTERNATING OR CARDS */}
+        {/* AGENDA GRID */}
         <div className="space-y-12">
           <div className="flex items-center gap-4 mb-8">
             <Target className="text-[#064e3b] w-8 h-8" />
             <h3 className="text-2xl font-bold text-slate-800 uppercase tracking-tight">
-             Advocacy & Action Plans
+              Advocacy & Action Plans
             </h3>
           </div>
 
@@ -289,7 +290,6 @@ export default function AdvocacyPage() {
                     </h5>
                   </div>
 
-                  {/* Mobile Image (Visible only on small screens) */}
                   {imageUrl && (
                     <div className="md:hidden mt-4 h-60 w-full rounded overflow-hidden">
                       <img
@@ -316,17 +316,17 @@ export default function AdvocacyPage() {
                     />
                   </div>
                   
-                  {/* Mobile Download Button */}
+                  {/* POSITION PAPER ACTIONS */}
                   {item.positionPaper?.asset?.url && (
-                    <div className="md:hidden mt-6">
-                      <button 
-                        onClick={() => handleDownloadPDF(item.positionPaper.asset, `${item.engTitle}.pdf`)}
-                        className="w-full px-4 py-2 bg-[#064e3b] text-white rounded text-sm font-semibold flex items-center justify-center gap-2 hover:bg-[#065f4a] transition-colors"
-                      >
-                        <Download size={16} />
-                        Download Position Paper
-                      </button>
-                    </div>
+                      <div className="flex flex-wrap gap-3">
+                        <button 
+                          onClick={() => handleViewPDF(item.positionPaper.asset.url)}
+                          className="flex-1 sm:flex-none px-4 py-2 border border-[#aafce8] text-[#064e3b] rounded text-sm font-bold flex items-center justify-center gap-2 hover:bg-slate-50 transition-colors"
+                        >
+                          <Eye size={16} />
+                          View Position Paper
+                        </button>
+                      </div>
                   )}
                 </div>
 

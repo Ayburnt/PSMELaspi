@@ -94,12 +94,6 @@ export default defineType({
           type: 'string',
           initialValue: 'Download 2025 Agenda (PDF)'
         }),
-        defineField({
-          name: 'printSummaryLabel',
-          title: 'Print Summary Button Label',
-          type: 'string',
-          initialValue: 'Print Summary'
-        })
       ]
     }),
 

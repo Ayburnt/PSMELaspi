@@ -177,7 +177,8 @@ export default defineType({
               title: 'title',
               icon: 'icon',
             },
-            prepare({title, icon}) {
+            prepare(selection) {
+              const { title, icon } = selection as Record<string, any>
               return {
                 title: title,
                 subtitle: icon ? `Icon: ${icon}` : 'No icon',

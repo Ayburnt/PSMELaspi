@@ -98,6 +98,13 @@ export default {
 
   preview: {
     select: { title: 'heroSection.heroTitle', subtitle: 'milestoneSection.milestoneTitle' },
-    prepare({ title, subtitle }) { return { title: title || 'History Page', subtitle: subtitle ? `Milestones: ${subtitle}` : 'Setup in progress', media: BookOpen }; },
+    prepare(selection) {
+      const { title, subtitle } = selection || {}
+      return {
+        title: title || 'History Page',
+        subtitle: subtitle ? `Milestones: ${subtitle}` : 'Setup in progress',
+        media: BookOpen,
+      }
+    },
   },
 };

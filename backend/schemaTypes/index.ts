@@ -16,8 +16,9 @@ import servicesPage from './services'
 import galleryImage from './galleryImage'
 import programsPage from './programs'
 import projectsPage from './projects'
+import type { SchemaTypeDefinition } from 'sanity'
 
-export const schemaTypes = [
+export const schemaTypes: SchemaTypeDefinition[] = [
     siteSettings,
     hero,
     aboutUs,

@@ -6,7 +6,7 @@ import { schemaTypes } from './schemaTypes'
 
 export default defineConfig({
   name: 'default',
-  title: 'PCCILaspi',
+  title: 'PCCI Laspi',
   projectId: '2svpsi6g',
   dataset: 'production',
   plugins: [

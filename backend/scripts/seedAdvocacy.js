@@ -172,7 +172,6 @@ const advocacyPageData = {
     quoteText:
       'The Philippine Chamber of Commerce and Industry - Las Piñas is committed to advocating for policies that support local businesses. Our agenda is designed to create a more resilient, efficient, and prosperous city for all stakeholders.',
     downloadAgendaLabel: 'Download 2025 Agenda (PDF)',
-    printSummaryLabel: 'Print Summary',
   },
 
   programs: advocacyPrograms,

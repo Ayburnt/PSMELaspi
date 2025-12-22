@@ -41,12 +41,13 @@ export default {
       media: 'logo',
       subtitle: 'sortOrder',
     },
-    prepare({ title, media, subtitle }) {
-        return {
-            title,
-            media,
-            subtitle: subtitle ? `Order: ${subtitle}` : 'No order set',
-        };
+    prepare(selection) {
+      const { title, media, subtitle } = selection || {}
+      return {
+        title,
+        media,
+        subtitle: subtitle ? `Order: ${subtitle}` : 'No order set',
+      }
     },
   },
 }
