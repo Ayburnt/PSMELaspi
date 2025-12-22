@@ -70,12 +70,8 @@ const HomePage = () => {
 
       <AboutSection /> 
       
-      
       <FeaturedMember />
       
-        <Gallery />
-
-
       {/* Animate on scroll: Events */}
       <motion.div
         initial="hidden"
