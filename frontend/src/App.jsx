@@ -29,6 +29,7 @@ import ContactUs from "./pages/About/ContactUs";
 import Programs from './pages/Programs/Programs';
 import Advocacy from './pages/Programs/Advocacy';
 import Services from './pages/Programs/Services';
+import Project from './pages/Programs/Project';
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -61,6 +62,7 @@ function AnimatedRoutes() {
       <Route path="/programs" element={<Programs />} />
       <Route path="/programs/advocacy" element={<Advocacy />} />
       <Route path="/programs/services" element={<Services />} />
+      <Route path="/programs/projects" element={<Project/>}/>
 
       {/* About Routes */}
       <Route path="/about/about-us" element={<AboutUs />} />
