@@ -9,6 +9,7 @@ import EventsFeed from '../components/sections/EventsFeed';
 import NewsFeed from '../components/sections/NewsFeed';
 import PromoPopup from '../components/sections/PromoPopup';
 import Partnership from '../components/sections/Partnership';
+import FeaturedMember from '../components/sections/FeaturedMember';
 
 const scrollVariants = {
   hidden: { opacity: 0, y: 50 },
@@ -30,6 +31,7 @@ const HomePage = () => {
 
       <AboutSection /> 
       <Partnership/>
+      <FeaturedMember />
 
       {/* Animate on scroll */}
       <motion.div
