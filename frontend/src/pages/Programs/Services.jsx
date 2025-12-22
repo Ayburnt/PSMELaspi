@@ -147,7 +147,7 @@ export default function Services() {
 
                 <div className="px-8 py-4 bg-slate-100 border-t border-slate-100 mt-auto">
                   <div className="flex items-center text-[#155333] text-sm font-semibold group-hover:underline decoration-yellow-500 underline-offset-4 cursor-pointer">
-                    View Details <ChevronRight size={16} className="ml-1" />
+                     {/* <ChevronRight size={16} className="ml-1" /> */}
                   </div>
                 </div>
               </div>

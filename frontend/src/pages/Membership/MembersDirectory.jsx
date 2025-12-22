@@ -76,115 +76,8 @@ export default function MembersDirectory() {
     fetchMembers();
   }, []);
 
-  // Fallback data for development/demo
-  const fallbackMembers = useMemo(
-    () => [
-      {
-        id: 1,
-        company: "A. V. ALVAIRA Brokerage Corporation",
-        slug: {
-          current: slugifyCompany("A. V. ALVAIRA Brokerage Corporation"),
-        },
-        membershipType: "Corporate Membership",
-        category: "Custom House Brokers",
-        description: "Customs Brokerage",
-        location:
-          "Mercantile Insurance Bldg., Gen. Luna Street. Intramuros, Manila",
-        keyServices: ["Custom House Brokers"],
-        email: "contact@avalvaira.com",
-        website: null,
-      },
-      {
-        id: 2,
-        company: "A.R. Chan Customs Brokerage",
-        slug: { current: slugifyCompany("A.R. Chan Customs Brokerage") },
-        membershipType: "Corporate Membership",
-        category: "Other",
-        description: "Customs Brokerage",
-        location:
-          "Rm.335 Padilla de Los Reyes Bldg., Juan Luna, Binondo, Manila",
-        keyServices: ["Brokerage"],
-        email: "contact@archan.com",
-        website: null,
-      },
-      {
-        id: 3,
-        company: "Arex Health Corporation",
-        slug: { current: slugifyCompany("Arex Health Corporation") },
-        membershipType: "Corporate Membership",
-        category: "Other",
-        description: "Importer and Distributor",
-        location:
-          "2/F Arex Bldg., B1 L2 Villa Carmen, Sta. Lucia, Novaliches, Quezon City",
-        keyServices: ["Importer", "Distributor"],
-        email: "info@arexhealth.com",
-        website: null,
-      },
-      {
-        id: 4,
-        company: "Barquez Accounting and Law Office",
-        slug: { current: slugifyCompany("Barquez Accounting and Law Office") },
-        membershipType: "Corporate Membership",
-        category: "Consulting",
-        description: "Accounting and Law Office",
-        location:
-          "Ground Floor YMCA Manila Complex No. 350 Antonio J. Villegas Street, Ermita, Manila",
-        keyServices: ["Accounting", "Auditing", "Consulting Cases"],
-        email: "admin@barquezoffice.com",
-        website: null,
-      },
-      {
-        id: 5,
-        company: "Beauty and Health Republic",
-        slug: { current: slugifyCompany("Beauty and Health Republic") },
-        membershipType: "Corporate Membership",
-        category: "Retail",
-        description: "Beauty and Health Products",
-        location: "222 Shaw Blvd. corner Bonifacio, Mandaluyong City",
-        keyServices: ["Vitamins", "Supplements", "Medical"],
-        email: "sales@beautyhealthrepublic.com",
-        website: null,
-      },
-      {
-        id: 6,
-        company: "Benchstone Ent., Inc (BEI)",
-        slug: { current: slugifyCompany("Benchstone Ent., Inc (BEI)") },
-        membershipType: "Corporate Membership",
-        category: "Other",
-        description:
-          "Benchstone Enterprises, Inc. (BEI) is a POEA-licensed overseas manpower recruitment and staffing agency established in the year 1993...",
-        location: "2687 BEI Bldg., Arellano Avenue, Sta. Ana, Manila",
-        keyServices: [
-          "Manpower Recruitment",
-          "Staffing Services",
-          "Overseas Employment",
-        ],
-        email: "info@benchstone.com",
-        website: "https://www.benchstone.com",
-      },
-      {
-        id: 9,
-        company: "CLEMZKIE, OPC",
-        slug: { current: slugifyCompany("CLEMZKIE, OPC") },
-        membershipType: "Individual Membership",
-        category: "Technology",
-        description:
-          "Turning complexity into clarity through innovative technology and data-driven solutions...",
-        location: "Sto Cristo, Quezon City",
-        keyServices: [
-          "Tech Consulting",
-          "Data Solutions",
-          "Blockchain Strategies",
-        ],
-        email: "contact@clemzkie.com",
-        website: null,
-      },
-    ],
-    []
-  );
 
-  // Use Sanity data if available, otherwise use fallback
-  const displayMembers = members.length > 0 ? members : fallbackMembers;
+  const displayMembers = members;
 
   // Extract unique categories for the filter
   const categories = [
@@ -439,7 +332,7 @@ export default function MembersDirectory() {
 
                       {/* ✅ slug route */}
                       <Link
-                        to={`/member/${memberKey}`}
+                        to={`/members-directory/${memberKey}`}
                         className="text-sm font-semibold text-green-700 hover:text-green-900 flex items-center group/btn"
                       >
                         View Profile

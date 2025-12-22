@@ -217,21 +217,29 @@ export default function HistoryPage() {
       </div>
 
       {/* BRIEF HISTORY */}
-      <section className="py-20">
-        <div className="container mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div className="relative rounded-2xl overflow-hidden shadow-xl bg-slate-100 min-h-[300px]">
-                <img src={content?.briefHistoryImage ? urlFor(content.briefHistoryImage).url() : ""} alt="History" className="w-full h-full object-cover" />
-            </div>
-            <div>
-              <h2 className="text-3xl font-bold mb-6">{content?.briefHistoryTitle}</h2>
-              <div className="prose prose-slate">
-                <SanityBlockContent blocks={content?.briefHistoryText} />
-              </div>
-            </div>
-          </div>
+     <section className="py-20">
+  <div className="container mx-auto px-6">
+    <div className="grid lg:grid-cols-2 gap-16 items-stretch">
+      {/* Image */}
+      <div className="relative rounded-2xl overflow-hidden ">
+        <img
+          src={content?.briefHistoryImage ? urlFor(content.briefHistoryImage).url() : ""}
+          alt="History"
+          className="w-full h-full object-cover"
+        />
+      </div>
+
+      {/* Content */}
+      <div className="flex flex-col justify-center">
+        <h2 className="text-3xl font-bold mb-6">{content?.briefHistoryTitle}</h2>
+        <div className="prose prose-slate text-justify">
+          <SanityBlockContent blocks={content?.briefHistoryText} />
         </div>
-      </section>
+      </div>
+    </div>
+  </div>
+</section>
+
 
       {/* DYNAMIC SCROLL TIMELINE */}
       {sortedMilestones.length > 0 && (
