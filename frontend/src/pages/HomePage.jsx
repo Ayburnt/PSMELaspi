@@ -34,7 +34,7 @@ const HomePage = () => {
       <Partnership/>
       <FeaturedMember />
       <AboutSection />
-      <Gallery />
+        <Gallery />
 
 
       {/* Animate on scroll */}
