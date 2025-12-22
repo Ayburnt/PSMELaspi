@@ -13,40 +13,54 @@ import 'swiper/css/effect-coverflow';
 
 const Gallery = () => {
   const [galleryData, setGalleryData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Fetching the first gallery document found
     client
       .fetch(`*[_type == "gallery"][0]`)
-      .then((data) => setGalleryData(data))
-      .catch(console.error);
+      .then((data) => {
+        setGalleryData(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
   }, []);
 
-  if (!galleryData || !galleryData.images) return <div className="text-center py-20">Loading...</div>;
+  if (loading) return <div className="text-center py-20 font-medium text-gray-600">Loading Gallery...</div>;
+  if (!galleryData || !galleryData.images) return null;
 
   return (
     <section className="bg-gray-50 py-16 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4">
-        {/* Header Section */}
+        
+        {/* Header Section - Now fully dynamic */}
         <div className="flex flex-col md:flex-row justify-between items-center mb-12">
           <div className="text-center md:text-left">
             <h2 className="text-5xl font-extrabold text-gray-900 tracking-tight">
-              {galleryData.title || "Gallery"}
+              {galleryData.title || "Our Gallery"}
             </h2>
             <div className="h-1.5 w-20 bg-blue-600 mt-4 rounded-full mx-auto md:mx-0"></div>
           </div>
-          <p className="text-gray-500 max-w-md mt-4 md:mt-0 text-center md:text-right italic">
-            Capturing moments that define our company culture and milestones.
-          </p>
+          
+          {/* Connected to 'subtitle' field from Sanity */}
+          {galleryData.subtitle && (
+            <p className="text-gray-500 max-w-md mt-6 md:mt-0 text-center md:text-right italic leading-relaxed">
+              {galleryData.subtitle}
+            </p>
+          )}
         </div>
 
         {/* Slider Wrapper */}
-        <div className="relative px-10"> 
+        <div className="relative px-4 md:px-10"> 
           <Swiper
             modules={[Navigation, Pagination, Autoplay, EffectCoverflow]}
             effect={'coverflow'}
             grabCursor={true}
             centeredSlides={true}
-            loop={true}
+            loop={galleryData.images.length > 3} // Only loop if we have enough slides
             slidesPerView={1}
             coverflowEffect={{
               rotate: 5,
@@ -55,29 +69,37 @@ const Gallery = () => {
               modifier: 2.5,
               slideShadows: false,
             }}
-            autoplay={{ delay: 4000, disableOnInteraction: false }}
+            autoplay={{ delay: 5000, disableOnInteraction: false }}
             pagination={{ clickable: true, dynamicBullets: true }}
             navigation={true}
             breakpoints={{
               640: { slidesPerView: 2 },
               1024: { slidesPerView: 2.5 },
             }}
-            className="pb-20"
+            className="pb-20 !overflow-visible"
           >
             {galleryData.images.map((item, index) => (
               <SwiperSlide key={item._key || index} className="transition-all duration-500">
                 <div className="relative group rounded-3xl overflow-hidden shadow-2xl bg-white aspect-[4/5] md:aspect-[16/10]">
-                  {/* Image */}
-                  <img
-                    src={urlFor(item).width(1200).url()}
-                    alt={item.title || "Gallery Image"}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
+                  
+                  {/* Image with proper Alt text from Sanity */}
+                  {item.asset && (
+                    <img
+                      src={urlFor(item).width(1200).height(800).fit('max').url()}
+                      alt={item.alt || galleryData.title || "Gallery Image"}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      loading="lazy"
+                    />
+                  )}
 
                   {/* Glassmorphism Overlay */}
                   <div className="absolute inset-x-4 bottom-4 p-6 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                    <h3 className="text-white text-xl font-bold">{item.title || "Company Insight"}</h3>
-                    <p className="text-white/80 text-sm mt-1 uppercase tracking-widest">Our Workspace</p>
+                    <h3 className="text-white text-xl font-bold">
+                      {item.title || "Moment Captured"}
+                    </h3>
+                    <p className="text-white/80 text-xs mt-1 uppercase tracking-widest font-semibold">
+                      View Detail
+                    </p>
                   </div>
                 </div>
               </SwiperSlide>
@@ -86,41 +108,33 @@ const Gallery = () => {
         </div>
       </div>
 
+      {/* Scoped Styles for Swiper Customization */}
       <style jsx global>{`
-        /* Custom Navigation Styling */
         .swiper-button-next, .swiper-button-prev {
-          background: rgba(255, 255, 255, 0.9) !important;
-          width: 55px !important;
-          height: 55px !important;
+          background: white !important;
+          width: 50px !important;
+          height: 50px !important;
           border-radius: 50% !important;
-          color: #1a1a1a !important;
+          color: #2563eb !important;
           box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
-          border: 1px solid #eee;
         }
 
         .swiper-button-next:after, .swiper-button-prev:after {
-          font-size: 20px !important;
-          font-weight: 900;
-        }
-
-        .swiper-pagination-bullet {
-          width: 12px;
-          height: 12px;
-          background: #cbd5e1 !important;
-          opacity: 1;
+          font-size: 18px !important;
+          font-weight: bold;
         }
 
         .swiper-pagination-bullet-active {
           background: #2563eb !important;
-          width: 30px;
-          border-radius: 6px;
+          width: 24px !important;
+          border-radius: 4px !important;
         }
 
-        /* Make non-active slides slightly transparent */
+        /* Focus effect for the center slide */
         .swiper-slide:not(.swiper-slide-active) {
-          opacity: 0.4;
-          filter: grayscale(100%);
-          transform: scale(0.9) !important;
+          opacity: 0.5;
+          filter: grayscale(40%) blur(1px);
+          transform: scale(0.85) !important;
         }
       `}</style>
     </section>
