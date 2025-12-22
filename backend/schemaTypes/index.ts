@@ -10,6 +10,9 @@ import hero from './hero'
 import siteSettings from './siteSettings'
 import history from './history' 
 import partner from './partner'
+import advocacyPage from './advocacy'
+import joinPage from './joinPage'
+import galleryImage from './galleryImage'
 
 export const schemaTypes = [
     siteSettings,
@@ -17,10 +20,13 @@ export const schemaTypes = [
     aboutUs,
     history,
     leadershipBoard,
-	partner,
+    partner,
+    advocacyPage,
+    joinPage,
     event,
     news,
     member,
     membershipInfo,
     whyJoinUs,
+    galleryImage,
 ]
