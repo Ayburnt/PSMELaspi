@@ -16,7 +16,6 @@ const Gallery = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Fetching the first gallery document found
     client
       .fetch(`*[_type == "gallery"][0]`)
       .then((data) => {
@@ -36,7 +35,7 @@ const Gallery = () => {
     <section className="bg-gray-50 py-16 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4">
 
-        {/* Header Section - Now fully dynamic */}
+        {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-center mb-12">
           <div className="text-center md:text-left">
             <h2 className="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight">
@@ -44,7 +43,6 @@ const Gallery = () => {
             </h2>
           </div>
 
-          {/* Connected to 'subtitle' field from Sanity */}
           {galleryData.subtitle && (
             <p className="text-gray-500 max-w-md mt-6 md:mt-0 text-center md:text-right italic leading-relaxed">
               {galleryData.subtitle}
@@ -59,7 +57,7 @@ const Gallery = () => {
             effect={'coverflow'}
             grabCursor={true}
             centeredSlides={true}
-            loop={galleryData.images.length > 3} // Only loop if we have enough slides
+            loop={galleryData.images.length > 3}
             slidesPerView={1}
             coverflowEffect={{
               rotate: 5,
@@ -81,7 +79,6 @@ const Gallery = () => {
               <SwiperSlide key={item._key || index} className="transition-all duration-500">
                 <div className="relative group rounded-3xl overflow-hidden shadow-2xl bg-white aspect-[4/5] md:aspect-[16/10]">
 
-                  {/* Image with proper Alt text from Sanity */}
                   {item.asset && (
                     <img
                       src={urlFor(item).width(1200).height(800).fit('max').url()}
@@ -107,35 +104,40 @@ const Gallery = () => {
         </div>
       </div>
 
-      {/* Scoped Styles for Swiper Customization */}
-      <style jsx global>{`
-        .swiper-button-next, .swiper-button-prev {
-          background: white !important;
-          width: 50px !important;
-          height: 50px !important;
-          border-radius: 50% !important;
-          color: #2563eb !important;
-          box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
-        }
+      {/* FIX: Standard <style> tag. 
+          The 'jsx' and 'global' attributes were removed as they 
+          are only for Next.js / styled-jsx environments.
+      */}
+      <style>
+        {`
+          .swiper-button-next, .swiper-button-prev {
+            background: white !important;
+            width: 50px !important;
+            height: 50px !important;
+            border-radius: 50% !important;
+            color: #2563eb !important;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+          }
 
-        .swiper-button-next:after, .swiper-button-prev:after {
-          font-size: 18px !important;
-          font-weight: bold;
-        }
+          .swiper-button-next:after, .swiper-button-prev:after {
+            font-size: 18px !important;
+            font-weight: bold;
+          }
 
-        .swiper-pagination-bullet-active {
-          background: #2563eb !important;
-          width: 24px !important;
-          border-radius: 4px !important;
-        }
+          .swiper-pagination-bullet-active {
+            background: #2563eb !important;
+            width: 24px !important;
+            border-radius: 4px !important;
+          }
 
-        /* Focus effect for the center slide */
-        .swiper-slide:not(.swiper-slide-active) {
-          opacity: 0.5;
-          filter: grayscale(40%) blur(1px);
-          transform: scale(0.85) !important;
-        }
-      `}</style>
+          /* Focus effect for the center slide */
+          .swiper-slide:not(.swiper-slide-active) {
+            opacity: 0.5;
+            filter: grayscale(40%) blur(1px);
+            transform: scale(0.85) !important;
+          }
+        `}
+      </style>
     </section>
   );
 };

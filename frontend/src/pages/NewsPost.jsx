@@ -9,7 +9,6 @@ import {
   Clock, 
   Facebook, 
   Twitter, 
-  Linkedin, 
   Link as LinkIcon,
   Check
 } from 'lucide-react';
@@ -83,6 +82,14 @@ export default function NewsPost() {
         <img src={urlFor(value).width(1200).url()} alt="" className="rounded-2xl my-10 shadow-xl" />
       ),
     },
+      list: {
+      bullet: ({ children }) => <ul className="list-disc pl-6 space-y-2 text-slate-700">{children}</ul>,
+      number: ({ children }) => <ol className="list-decimal pl-6 space-y-2 text-slate-700">{children}</ol>,
+    },
+    listItem: {
+      bullet: ({ children }) => <li className="leading-relaxed">{children}</li>,
+      number: ({ children }) => <li className="leading-relaxed">{children}</li>,
+    },
     marks: {
       link: ({ value, children }) => (
         <a href={value?.href} target="_blank" rel="noopener noreferrer" className="text-green-700 underline font-medium hover:text-green-900">
@@ -93,6 +100,9 @@ export default function NewsPost() {
     block: {
       blockquote: ({ children }) => (
         <blockquote className="border-l-4 border-green-600 bg-slate-50 pl-6 py-2 italic rounded-r-xl my-6">{children}</blockquote>
+      ),
+      normal: ({ children }) => (
+        <p className="mb-5 leading-relaxed text-slate-700">{children}</p>
       ),
       h1: ({ children }) => <h1 className="font-serif text-4xl mt-12 mb-6 text-slate-900">{children}</h1>,
       h2: ({ children }) => <h2 className="font-serif text-3xl mt-10 mb-5 text-slate-900">{children}</h2>,
@@ -168,16 +178,6 @@ export default function NewsPost() {
               className="p-2.5 bg-slate-50 hover:bg-sky-100 text-slate-600 hover:text-sky-500 rounded-full transition-all"
             >
               <Twitter size={20} />
-            </a>
-
-            {/* LinkedIn */}
-            <a 
-              href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(currentUrl)}`}
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="p-2.5 bg-slate-50 hover:bg-blue-100 text-slate-600 hover:text-blue-700 rounded-full transition-all"
-            >
-              <Linkedin size={20} />
             </a>
 
             {/* Copy Link Button */}

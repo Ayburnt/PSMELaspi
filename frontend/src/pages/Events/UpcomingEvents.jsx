@@ -3,11 +3,10 @@ import {
   Calendar as CalendarIcon,
   MapPin,
   Clock,
-  Users,
-  ChevronRight,
-  CalendarOff,
   ChevronLeft,
+  ChevronRight,
   Search,
+  CalendarOff,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import Navbar from "../../components/layout/Navbar";
@@ -18,6 +17,8 @@ import { client } from "../../sanityClient";
 export default function UpcomingEvents() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All");
   const [currentDate] = useState(new Date());
 
   // --- PAGINATION STATE ---
@@ -27,34 +28,46 @@ export default function UpcomingEvents() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const query = `*[_type == "event" && eventType == "upcoming"] | order(date asc) {
-          _id,
-          title,
-          slug,
-          date,
-          time,
-          location,
-          category,
-          attendees,
-          description,
-          registrationOpen,
-          price,
-          image {
-            asset -> {
-              url
-            }
-          }
-        }`;
+        const query = `*[_type == "event"] | order(date asc) {
+        _id,
+        title,
+        slug,
+        date,
+        time,
+        location,
+        category,
+        attendees,
+        description,
+        registrationOpen,
+        price,
+        eventType,
+        image {
+          asset -> { url }
+        }
+      }`;
 
         const data = await client.fetch(query);
-        const eventsWithDaysUntil = data.map((event) => ({
-          ...event,
-          daysUntil: Math.ceil(
-            (new Date(event.date) - new Date()) / (1000 * 60 * 60 * 24)
-          ),
-        }));
 
-        setEvents(eventsWithDaysUntil);
+        const eventsWithType = data.map((event) => {
+          const eventDate = new Date(event.date);
+          const today = new Date();
+
+          // If event date is past, automatically set eventType to "Past"
+          const type = eventDate < today ? "past" : event.eventType;
+
+          return {
+            ...event,
+            eventType: type,
+            daysUntil: Math.ceil((eventDate - today) / (1000 * 60 * 60 * 24)),
+          };
+        });
+
+        // Filter only upcoming events for this page
+        const upcomingEvents = eventsWithType.filter(
+          (e) => e.eventType === "upcoming"
+        );
+
+        setEvents(upcomingEvents);
         setLoading(false);
       } catch (err) {
         console.error("Error fetching events:", err);
@@ -65,15 +78,32 @@ export default function UpcomingEvents() {
     fetchEvents();
   }, []);
 
-  // --- PAGINATION CALCULATIONS ---
+  // --- FILTERS ---
+  const categories = [
+    "All",
+    ...new Set(events.map((e) => e.category).filter(Boolean)),
+  ];
+  const filteredEvents = events.filter((e) => {
+    const matchesSearch = e.title
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    const matchesCategory =
+      selectedCategory === "All" || e.category === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
+
+  // --- PAGINATION ---
   const indexOfLastEvent = currentPage * eventsPerPage;
   const indexOfFirstEvent = indexOfLastEvent - eventsPerPage;
-  const currentEvents = events.slice(indexOfFirstEvent, indexOfLastEvent);
-  const totalPages = Math.ceil(events.length / eventsPerPage);
+  const currentEvents = filteredEvents.slice(
+    indexOfFirstEvent,
+    indexOfLastEvent
+  );
+  const totalPages = Math.ceil(filteredEvents.length / eventsPerPage);
 
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
-    window.scrollTo({ top: 0, behavior: "smooth" }); // Scroll to top when changing page
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const renderCalendar = () => {
@@ -162,14 +192,14 @@ export default function UpcomingEvents() {
       <TopBar />
       <Navbar />
 
-      <header className="bg-[#155333] border-b border-slate-200 py-12 px-4">
+      <header className="bg-[#31694E] border-b border-slate-200 py-12 px-4">
         <div className="max-w-7xl mx-auto">
           <nav className="flex items-center gap-2 text-[10px] font-bold text-yellow-500 uppercase tracking-widest mb-4">
             <Link to="/" className="hover:text-white transition-colors">
               Home
             </Link>
             <ChevronRight size={12} />
-            <span className="text-white/80">Upcoming Events </span>
+            <span className="text-white/80">Upcoming Events</span>
           </nav>
           <h1 className="text-4xl font-bold text-white tracking-tight mb-2">
             Schedule of Proceedings
@@ -181,15 +211,52 @@ export default function UpcomingEvents() {
         </div>
       </header>
 
+      {/* --- SEARCH + CATEGORY FILTER --- */}
+      <section className="bg-white border-b border-slate-200 sticky top-[72px] z-30">
+        <div className="max-w-7xl mx-auto px-4 py-4">
+          <div className="flex flex-col md:flex-row gap-6 items-center justify-between">
+            <div className="relative w-full md:w-1/4">
+              <Search
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+                size={18}
+              />
+              <input
+                type="text"
+                placeholder="Search events..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-md text-sm focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 outline-none transition-all"
+              />
+            </div>
+
+            <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 no-scrollbar">
+              <span className="text-slate-400 font-bold uppercase text-[10px] tracking-widest flex items-center gap-1">
+                <CalendarIcon size={14} /> Category
+              </span>
+              <div className="flex gap-1">
+                {categories.map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => setSelectedCategory(cat)}
+                    className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all whitespace-nowrap border ${
+                      selectedCategory === cat
+                        ? "bg-emerald-50 border-emerald-600 text-emerald-700"
+                        : "border-slate-200 text-slate-500 hover:border-slate-400"
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <main className="py-12 px-4 max-w-7xl mx-auto">
         <div className="flex flex-col lg:flex-row gap-8">
           <aside className="w-full lg:w-72 shrink-0 space-y-6">
-            <div>
-              <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">
-                Event Calendar
-              </label>
-              {renderCalendar()}
-            </div>
+            {renderCalendar()}
           </aside>
 
           <div className="flex-1">
@@ -200,7 +267,7 @@ export default function UpcomingEvents() {
                   Accessing Schedule...
                 </p>
               </div>
-            ) : events.length === 0 ? (
+            ) : currentEvents.length === 0 ? (
               <div className="text-center py-24 border-2 border-dashed border-slate-200 rounded-md bg-slate-100">
                 <CalendarOff className="mx-auto h-12 w-12 text-slate-200 mb-4" />
                 <h3 className="text-sm font-bold text-slate-900 uppercase tracking-widest">
@@ -217,9 +284,10 @@ export default function UpcomingEvents() {
               <>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {currentEvents.map((event) => (
-                    <div
+                    <Link
                       key={event._id}
-                      className="bg-white border border-slate-200 rounded-md overflow-hidden flex flex-col shadow-sm hover:border-emerald-600 group transition-colors"
+                      to={`/events/${event.slug?.current || event._id}`}
+                      className=" bg-white border border-slate-200 rounded-md overflow-hidden flex flex-col shadow-sm hover:border-emerald-600 group transition-colors no-underline"
                     >
                       <div className="relative h-44 overflow-hidden bg-slate-100">
                         <img
@@ -253,6 +321,12 @@ export default function UpcomingEvents() {
                           </h3>
                         </div>
 
+                        {event.description && (
+                          <p className="text-sm text-slate-600 leading-relaxed mb-4 line-clamp-3">
+                            {event.description}
+                          </p>
+                        )}
+
                         <div className="space-y-2 py-3 border-t border-slate-50 mb-4 text-[11px]">
                           <div className="flex items-center gap-3">
                             <Clock size={14} className="text-slate-400" />
@@ -282,8 +356,7 @@ export default function UpcomingEvents() {
                             </span>
                           </div>
 
-                          <Link
-                            to={`/events/${event.slug?.current || event._id}`}
+                          <span
                             className={`px-4 py-2 text-[10px] font-bold uppercase tracking-widest transition-all border ${
                               event.registrationOpen
                                 ? "bg-slate-900 text-white border-slate-900 hover:bg-emerald-800"
@@ -291,14 +364,14 @@ export default function UpcomingEvents() {
                             }`}
                           >
                             {event.registrationOpen ? "View Details" : "Closed"}
-                          </Link>
+                          </span>
                         </div>
                       </div>
-                    </div>
+                    </Link>
                   ))}
                 </div>
 
-                {/* --- PAGINATION CONTROLS --- */}
+                {/* --- PAGINATION --- */}
                 {totalPages > 1 && (
                   <div className="mt-10 flex items-center justify-center gap-2">
                     <button

@@ -28,25 +28,35 @@ const scrollTransition = {
 
 const HomePage = () => {
   useEffect(() => {
-    // 1. Inject the Noupe script
-    const script = document.createElement('script');
-    script.src = 'https://www.noupe.com/embed/019b441ec49c7c8f9d542f9e8edf0b3287ec.js';
-    script.async = true;
+    const scriptId = 'noupe-embed-script';
     
-    // 2. Append to body so the floating chat bot ("X" button) works correctly
-    document.body.appendChild(script);
+    // 1. Check if the script already exists to prevent "Identifier already declared" error
+    // This is crucial in React Development mode where components mount twice.
+    const existingScript = document.getElementById(scriptId);
 
-    // 3. Cleanup on unmount
+    if (!existingScript) {
+      const script = document.createElement('script');
+      script.id = scriptId;
+      script.src = 'https://www.noupe.com/embed/019b441ec49c7c8f9d542f9e8edf0b3287ec.js';
+      script.async = true;
+      
+      // 2. Append to body
+      document.body.appendChild(script);
+    }
+
+    // 3. Optional: Cleanup on unmount
+    // Only remove if you want the widget to disappear when navigating to other pages
     return () => {
-      if (document.body.contains(script)) {
-        document.body.removeChild(script);
+      const scriptToRemove = document.getElementById(scriptId);
+      if (scriptToRemove) {
+        // document.body.removeChild(scriptToRemove); 
       }
     };
   }, []);
 
   return (
     <div className="font-sans text-gray-900 bg-white overflow-x-hidden relative">
-      {/* Global CSS fix for Noupe responsiveness and clickability */}
+      {/* Global CSS fix using standard style tag - removed 'jsx' and 'global' for compatibility */}
       <style dangerouslySetInnerHTML={{ __html: `
         /* Ensures the floating Noupe widget stays on top of all Framer Motion layers */
         #noupe-widget-container, 
@@ -93,14 +103,13 @@ const HomePage = () => {
       >
         <NewsFeed />
       </motion.div>
+
       <Partnership />
 
-          
       {/* Project Gallery Section */}
       <div className="w-full max-w-7xl mx-auto px-6 mb-24">
         <Gallery />
       </div>
-
 
       <Footer />
       <PromoPopup />
