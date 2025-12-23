@@ -81,7 +81,7 @@ export default function App() {
   return (
     <Router>
       <AnimatedRoutes />
-      <ScrollToTopButton />
+      {/* <ScrollToTopButton /> */}
     </Router>
   );
 }
