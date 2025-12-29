@@ -1,7 +1,7 @@
 import {defineField, defineType} from 'sanity'
 import {UsersIcon} from '@sanity/icons'
 // Ensure this path matches your folder structure exactly
-import { QrPreview } from '../components/QrPreview'
+import {QrPreview} from '../components/QrPreview'
 
 export default defineType({
   name: 'member',
@@ -13,7 +13,7 @@ export default defineType({
     {name: 'basic', title: 'Basic Info'},
     {name: 'contact', title: 'Contact & Social'},
     {name: 'business', title: 'Business Details'},
-    {name: 'admin', title: 'Admin Settings'},
+    {name: 'memberDiscount', title: 'Member Privileges'},
   ],
   fields: [
     defineField({
@@ -43,8 +43,8 @@ export default defineType({
       group: 'basic',
       description: 'Optional: Overwrite the default profile link (e.g., link to their own website)',
       components: {
-        field: QrPreview 
-      }
+        field: QrPreview,
+      },
     }),
     defineField({
       name: 'membershipType',
@@ -147,10 +147,59 @@ export default defineType({
       description: 'List of products offered by the company',
     }),
     defineField({
+      name: 'memberDiscount',
+      title: '🎫 Member Privilege',
+      type: 'object',
+      group: 'memberDiscount',
+      description: '💡 Offer exclusive discounts or privileges to fellow PCCI members',
+      fields: [
+        {
+          name: 'enabled',
+          title: '✅ Activate Member Privilege',
+          type: 'boolean',
+          description: 'Toggle this ON to offer a special privilege to PCCI members',
+          initialValue: false,
+        },
+        {
+          name: 'description',
+          title: '🎁 Privilege Offer',
+          type: 'string',
+          description: 'Describe your offer in simple terms',
+          placeholder: 'Examples: "10% Off All Services", "Free Consultation (30 mins)", "Buy 1 Take 1"',
+          validation: (rule) => rule.required().max(100).warning('Keep it short and clear (max 100 characters)'),
+          hidden: ({ parent }) => !parent?.enabled,
+        },
+        {
+          name: 'appliesTo',
+          title: '📦 What Does This Apply To?',
+          type: 'array',
+          of: [{type: 'string'}],
+          description: 'Select which services or products get this privilege (optional - leave blank if it applies to everything)',
+          placeholder: 'Type to add items (e.g., "Web Design Services", "Office Supplies")',
+          hidden: ({ parent }) => !parent?.enabled,
+        },
+        {
+          name: 'conditions',
+          title: '📋 Terms & Conditions',
+          type: 'text',
+          rows: 4,
+          description: 'What are the rules? Be clear so members know how to use it',
+          placeholder: 'Example:\n• By appointment only\n• Present active PCCI membership ID\n• Not valid with other promos\n• Minimum purchase of ₱500',
+          hidden: ({ parent }) => !parent?.enabled,
+        },
+        {
+          name: 'validUntil',
+          title: '📅 Expiration Date (Optional)',
+          type: 'date',
+          description: 'When does this privilege expire? Leave blank if no expiration',
+          hidden: ({ parent }) => !parent?.enabled,
+        },
+      ],
+    }),
+    defineField({
       name: 'memberSince',
       title: 'Member Since (Year)',
       type: 'string',
-      group: 'admin',
       description: 'Year when they joined (e.g., 2020)',
     }),
     defineField({
@@ -173,7 +222,12 @@ export default defineType({
       group: 'business',
       fields: [
         {name: 'name', title: 'Full Name', type: 'string', validation: (rule) => rule.required()},
-        {name: 'position', title: 'Position/Title', type: 'string', validation: (rule) => rule.required()},
+        {
+          name: 'position',
+          title: 'Position/Title',
+          type: 'string',
+          validation: (rule) => rule.required(),
+        },
         {name: 'photo', title: 'Photo', type: 'image', options: {hotspot: true}},
       ],
     }),
@@ -183,20 +237,110 @@ export default defineType({
       type: 'object',
       group: 'business',
       fields: [
-        {name: 'monday', title: 'Monday', type: 'string', options: {list: ['Closed', '8:00 AM - 5:00 PM', '8:00 AM - 6:00 PM', '9:00 AM - 5:00 PM', '9:00 AM - 6:00 PM', '10:00 AM - 3:00 PM']}},
-        {name: 'tuesday', title: 'Tuesday', type: 'string', options: {list: ['Closed', '8:00 AM - 5:00 PM', '8:00 AM - 6:00 PM', '9:00 AM - 5:00 PM', '9:00 AM - 6:00 PM', '10:00 AM - 3:00 PM']}},
-        {name: 'wednesday', title: 'Wednesday', type: 'string', options: {list: ['Closed', '8:00 AM - 5:00 PM', '8:00 AM - 6:00 PM', '9:00 AM - 5:00 PM', '9:00 AM - 6:00 PM', '10:00 AM - 3:00 PM']}},
-        {name: 'thursday', title: 'Thursday', type: 'string', options: {list: ['Closed', '8:00 AM - 5:00 PM', '8:00 AM - 6:00 PM', '9:00 AM - 5:00 PM', '9:00 AM - 6:00 PM', '10:00 AM - 3:00 PM']}},
-        {name: 'friday', title: 'Friday', type: 'string', options: {list: ['Closed', '8:00 AM - 5:00 PM', '8:00 AM - 6:00 PM', '9:00 AM - 5:00 PM', '9:00 AM - 6:00 PM', '10:00 AM - 3:00 PM']}},
-        {name: 'saturday', title: 'Saturday', type: 'string', options: {list: ['Closed', '8:00 AM - 12:00 PM', '9:00 AM - 1:00 PM', '10:00 AM - 3:00 PM']}},
-        {name: 'sunday', title: 'Sunday', type: 'string', options: {list: ['Closed']}},
+        {
+          name: 'monday',
+          title: 'Monday',
+          type: 'string',
+          options: {
+            list: [
+              'Closed',
+              '8:00 AM - 5:00 PM',
+              '8:00 AM - 6:00 PM',
+              '9:00 AM - 5:00 PM',
+              '9:00 AM - 6:00 PM',
+              '10:00 AM - 3:00 PM',
+            ],
+          },
+        },
+        {
+          name: 'tuesday',
+          title: 'Tuesday',
+          type: 'string',
+          options: {
+            list: [
+              'Closed',
+              '8:00 AM - 5:00 PM',
+              '8:00 AM - 6:00 PM',
+              '9:00 AM - 5:00 PM',
+              '9:00 AM - 6:00 PM',
+              '10:00 AM - 3:00 PM',
+            ],
+          },
+        },
+        {
+          name: 'wednesday',
+          title: 'Wednesday',
+          type: 'string',
+          options: {
+            list: [
+              'Closed',
+              '8:00 AM - 5:00 PM',
+              '8:00 AM - 6:00 PM',
+              '9:00 AM - 5:00 PM',
+              '9:00 AM - 6:00 PM',
+              '10:00 AM - 3:00 PM',
+            ],
+          },
+        },
+        {
+          name: 'thursday',
+          title: 'Thursday',
+          type: 'string',
+          options: {
+            list: [
+              'Closed',
+              '8:00 AM - 5:00 PM',
+              '8:00 AM - 6:00 PM',
+              '9:00 AM - 5:00 PM',
+              '9:00 AM - 6:00 PM',
+              '10:00 AM - 3:00 PM',
+            ],
+          },
+        },
+        {
+          name: 'friday',
+          title: 'Friday',
+          type: 'string',
+          options: {
+            list: [
+              'Closed',
+              '8:00 AM - 5:00 PM',
+              '8:00 AM - 6:00 PM',
+              '9:00 AM - 5:00 PM',
+              '9:00 AM - 6:00 PM',
+              '10:00 AM - 3:00 PM',
+            ],
+          },
+        },
+        {
+          name: 'saturday',
+          title: 'Saturday',
+          type: 'string',
+          options: {
+           list: [
+              'Closed',
+              '8:00 AM - 5:00 PM',
+              '8:00 AM - 6:00 PM',
+              '9:00 AM - 5:00 PM',
+              '9:00 AM - 6:00 PM',
+              '10:00 AM - 3:00 PM',
+            ],
+          },
+        },
+        {name: 'sunday', title: 'Sunday', type: 'string', options: {list: [
+              'Closed',
+              '8:00 AM - 5:00 PM',
+              '8:00 AM - 6:00 PM',
+              '9:00 AM - 5:00 PM',
+              '9:00 AM - 6:00 PM',
+              '10:00 AM - 3:00 PM',
+            ],}},
       ],
     }),
     defineField({
       name: 'isNewMember',
       title: 'New Member',
       type: 'boolean',
-      group: 'admin',
       description: 'Mark this member as new',
       initialValue: false,
     }),
@@ -204,7 +348,6 @@ export default defineType({
       name: 'featured',
       title: 'Featured Member',
       type: 'boolean',
-      group: 'admin',
       description: 'Highlight this member in the directory',
       initialValue: false,
     }),
@@ -212,7 +355,6 @@ export default defineType({
       name: 'status',
       title: 'Status',
       type: 'string',
-      group: 'admin',
       options: {
         list: [
           {title: 'Active', value: 'active'},
