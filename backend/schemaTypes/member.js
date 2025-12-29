@@ -242,10 +242,24 @@ export default defineType({
           title: 'Saturday',
           type: 'string',
           options: {
-            list: ['Closed', '8:00 AM - 12:00 PM', '9:00 AM - 1:00 PM', '10:00 AM - 3:00 PM'],
+           list: [
+              'Closed',
+              '8:00 AM - 5:00 PM',
+              '8:00 AM - 6:00 PM',
+              '9:00 AM - 5:00 PM',
+              '9:00 AM - 6:00 PM',
+              '10:00 AM - 3:00 PM',
+            ],
           },
         },
-        {name: 'sunday', title: 'Sunday', type: 'string', options: {list: ['Closed']}},
+        {name: 'sunday', title: 'Sunday', type: 'string', options: { list: [
+              'Closed',
+              '8:00 AM - 5:00 PM',
+              '8:00 AM - 6:00 PM',
+              '9:00 AM - 5:00 PM',
+              '9:00 AM - 6:00 PM',
+              '10:00 AM - 3:00 PM',
+            ],}},
       ],
     }),
 
