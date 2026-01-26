@@ -47,14 +47,17 @@ export default defineType({
       type: 'string',
       options: {
         list: [
-            { title: 'Zoom', value: 'Zoom' },
             { title: 'Conference', value: 'Conference' },
+            { title: 'Turnover Ceremony', value: 'Turnover Ceremony' },
             { title: 'Summit', value: 'Summit' },
             { title: 'Gala', value: 'Gala' },
             { title: 'Bootcamp', value: 'Bootcamp' },
             { title: 'Masterclass', value: 'Masterclass' },
             { title: 'Awards', value: 'Awards' },
             { title: 'Competition', value: 'Competition' },
+            { title: 'Workshop', value: 'Workshop' },
+            { title: 'Webinar', value: 'Webinar' },
+            { title: 'Networking', value: 'Networking' },
         ],
       },
       validation: rule => rule.required()
@@ -132,7 +135,48 @@ export default defineType({
       name: 'body',
       title: 'Full Article Content',
       type: 'array', 
-      of: [{type: 'block'}] // This allows Rich Text (Paragraphs, Bold, etc.)
+      of: [
+        {
+          type: 'block',
+          styles: [
+            {title: 'Normal', value: 'normal'},
+            {title: 'Heading 1', value: 'h1'},
+            {title: 'Heading 2', value: 'h2'},
+            {title: 'Heading 3', value: 'h3'},
+            {title: 'Quote', value: 'blockquote'},
+          ],
+          lists: [
+            {title: 'Bullet', value: 'bullet'},
+            {title: 'Numbered', value: 'number'},
+          ],
+          marks: {
+            decorators: [
+              {title: 'Bold', value: 'strong'},
+              {title: 'Italic', value: 'em'},
+              {title: 'Underline', value: 'underline'},
+              {title: 'Code', value: 'code'},
+            ],
+            annotations: [
+              {
+                title: 'URL',
+                name: 'link',
+                type: 'object',
+                fields: [
+                  {
+                    title: 'URL',
+                    name: 'href',
+                    type: 'url',
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          type: 'image',
+          options: { hotspot: true }
+        }
+      ]
     }),
   ],
 })
