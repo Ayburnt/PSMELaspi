@@ -72,9 +72,9 @@ export default defineType({
           type: 'block',
           styles: [
             {title: 'Normal', value: 'normal'},
-            {title: 'H1', value: 'h1'},
-            {title: 'H2', value: 'h2'},
-            {title: 'H3', value: 'h3'},
+            {title: 'Heading 1', value: 'h1'},
+            {title: 'Heading 2', value: 'h2'},
+            {title: 'Heading 3', value: 'h3'},
             {title: 'Quote', value: 'blockquote'},
           ],
           lists: [
@@ -90,27 +90,25 @@ export default defineType({
             ],
             annotations: [
               {
+                title: 'URL',
                 name: 'link',
-                title: 'Link',
                 type: 'object',
                 fields: [
                   {
-                    name: 'href',
                     title: 'URL',
+                    name: 'href',
                     type: 'url',
-                  },
-                ],
-              },
-            ],
-          },
+                  }
+                ]
+              }
+            ]
+          }
         },
-
-        // Optional: allow images inside article
         {
           type: 'image',
-          options: {hotspot: true},
-        },
-      ],
+          options: { hotspot: true }
+        }
+      ]
     }),
   ],
 })

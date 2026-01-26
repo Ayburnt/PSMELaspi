@@ -47,18 +47,17 @@ export default defineType({
       type: 'string',
       options: {
         list: [
-          {title: 'Conference', value: 'Conference'},
-          {title: 'Summit', value: 'Summit'},
-          {title: 'Gala', value: 'Gala'},
-          {title: 'Bootcamp', value: 'Bootcamp'},
-          {title: 'Masterclass', value: 'Masterclass'},
-          {title: 'Awards', value: 'Awards'},
-          {title: 'Competition', value: 'Competition'},
-          {title: 'Mentoring', value: 'Mentoring'},
-          {title: 'Workshop', value: 'Workshop'},
-          {title: 'Webinar', value: 'Webinar'},
-          {title: 'Networking', value: 'Networking'},
-          {title: 'Turnover Ceremony', value: 'Turnover Ceremony'},
+            { title: 'Conference', value: 'Conference' },
+            { title: 'Turnover Ceremony', value: 'Turnover Ceremony' },
+            { title: 'Summit', value: 'Summit' },
+            { title: 'Gala', value: 'Gala' },
+            { title: 'Bootcamp', value: 'Bootcamp' },
+            { title: 'Masterclass', value: 'Masterclass' },
+            { title: 'Awards', value: 'Awards' },
+            { title: 'Competition', value: 'Competition' },
+            { title: 'Workshop', value: 'Workshop' },
+            { title: 'Webinar', value: 'Webinar' },
+            { title: 'Networking', value: 'Networking' },
         ],
       },
       validation: (rule) => rule.required(),
@@ -123,15 +122,15 @@ export default defineType({
     defineField({
       name: 'body',
       title: 'Full Article Content',
-      type: 'array',
+      type: 'array', 
       of: [
         {
           type: 'block',
           styles: [
             {title: 'Normal', value: 'normal'},
-            {title: 'H1', value: 'h1'},
-            {title: 'H2', value: 'h2'},
-            {title: 'H3', value: 'h3'},
+            {title: 'Heading 1', value: 'h1'},
+            {title: 'Heading 2', value: 'h2'},
+            {title: 'Heading 3', value: 'h3'},
             {title: 'Quote', value: 'blockquote'},
           ],
           lists: [
@@ -147,27 +146,25 @@ export default defineType({
             ],
             annotations: [
               {
+                title: 'URL',
                 name: 'link',
-                title: 'Link',
                 type: 'object',
                 fields: [
                   {
-                    name: 'href',
                     title: 'URL',
+                    name: 'href',
                     type: 'url',
-                  },
-                ],
-              },
-            ],
-          },
+                  }
+                ]
+              }
+            ]
+          }
         },
-
-        // Optional: allow images inside article
         {
           type: 'image',
-          options: {hotspot: true},
-        },
-      ],
+          options: { hotspot: true }
+        }
+      ]
     }),
   ],
 })

@@ -105,31 +105,32 @@ export default {
               icon: Clock,
               fields: [
                 {
-                  name: 'year',
-                  title: 'Year/Date',
+                  name: 'date',
+                  title: 'Date/Year',
                   type: 'string',
-                  description: 'e.g., "1995" or "Q3 2005"',
+                  description: 'Year (e.g., "1993"), date range (e.g., "Jan 2024 - March 2025"), or "-" if unknown',
                   validation: (Rule) => Rule.required(),
                 },
                 {
                   name: 'name',
-                  title: 'Name (President/Leader)',
+                  title: 'President Name',
                   type: 'string',
-                  description: 'Name of the president or leader during this period',
+                  description: 'Name or title of the president',
                   validation: (Rule) => Rule.required(),
+                },
+                {
+                  name: 'image',
+                  title: 'Profile Picture',
+                  type: 'image',
+                  options: { hotspot: true },
+                  description: 'Portrait or profile image of the president',
                 },
                 {
                   name: 'description',
                   title: 'Description',
                   type: 'text',
                   rows: 3,
-                },
-                {
-                  name: 'image',
-                  title: 'Profile picture (Image)',
-                  type: 'image',
-                  options: {hotspot: true},
-                  description: 'Optional image icon for the milestone. If not provided, a default person icon will be displayed.',
+                  validation: (Rule) => Rule.required(),
                 },
               ],
             },
@@ -169,8 +170,7 @@ export default {
 
   preview: {
     select: {title: 'heroSection.heroTitle', subtitle: 'milestoneSection.milestoneTitle'},
-    prepare(selection) {
-      const {title, subtitle} = selection || {}
+    prepare({title, subtitle}) {
       return {
         title: title || 'History Page',
         subtitle: subtitle ? `Milestones: ${subtitle}` : 'Setup in progress',
