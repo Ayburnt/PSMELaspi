@@ -2,10 +2,64 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { client, urlFor } from "../../sanityClient";
 import { PortableText } from "@portabletext/react";
-import { ArrowLeft, Calendar, MapPin, Clock, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, Calendar, MapPin, Clock, CheckCircle2, ExternalLink } from "lucide-react";
 import Navbar from "../../components/layout/Navbar";
 import Footer from "../../components/layout/Footer";
 import TopBar from "../../components/layout/TopBar";
+
+const portableTextComponents = {
+  block: {
+    normal: ({children}) => <p className="text-slate-700 leading-relaxed mb-4">{children}</p>,
+    h1: ({children}) => <h1 className="text-3xl font-serif font-bold text-slate-900 mt-8 mb-4">{children}</h1>,
+    h2: ({children}) => <h2 className="text-2xl font-serif font-bold text-slate-900 mt-6 mb-3">{children}</h2>,
+    h3: ({children}) => <h3 className="text-xl font-serif font-bold text-slate-900 mt-5 mb-2">{children}</h3>,
+    blockquote: ({children}) => <blockquote className="border-l-4 border-green-500 bg-slate-50 p-4 rounded-r-lg my-4 italic text-slate-600">{children}</blockquote>,
+  },
+  list: {
+    bullet: ({children}) => <ul className="list-disc list-inside space-y-2 mb-4 text-slate-700">{children}</ul>,
+    number: ({children}) => <ol className="list-decimal list-inside space-y-2 mb-4 text-slate-700">{children}</ol>,
+  },
+  listItem: {
+    bullet: ({children}) => <li className="ml-2">{children}</li>,
+    number: ({children}) => <li className="ml-2">{children}</li>,
+  },
+  marks: {
+    strong: ({children}) => <strong className="font-bold text-slate-900">{children}</strong>,
+    em: ({children}) => <em className="italic">{children}</em>,
+    underline: ({children}) => <u className="underline">{children}</u>,
+    code: ({children}) => <code className="bg-slate-100 px-2 py-1 rounded text-sm font-mono text-red-600">{children}</code>,
+    link: ({value, children}) => {
+      const url = value?.href;
+      return (
+        <a 
+          href={url} 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="text-green-600 hover:text-green-700 underline cursor-pointer"
+          onClick={(e) => {
+            if (url) {
+              window.open(url, '_blank');
+            }
+          }}
+        >
+          {children}
+          <ExternalLink size={14} className="inline ml-1" />
+        </a>
+      );
+    },
+  },
+  types: {
+    image: ({value}) => (
+      <div className="my-8 rounded-2xl overflow-hidden shadow-lg">
+        <img 
+          src={urlFor(value).width(800).url()} 
+          alt="Article content" 
+          className="w-full h-auto object-cover"
+        />
+      </div>
+    ),
+  },
+};
 
 export default function EventPost() {
   const { slug } = useParams();
@@ -49,22 +103,15 @@ export default function EventPost() {
           </Link>
 
           {/* Right Side: Meta Tags */}
-          <div className="flex items-center gap-4 flex-wrap text-sm text-gray-500">
-            <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full font-bold uppercase text-[10px] tracking-wider">
-              {event.category}
-            </span>
+          <div className="flex flex-col gap-3 text-sm text-gray-500 ml-auto">
+            <div className="flex items-center gap-3 flex-wrap justify-end">
+              <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full font-bold uppercase text-[10px] tracking-wider w-fit">
+                {event.category}
+              </span>
 
-            <div className="flex items-center gap-3">
               <span className="flex items-center gap-1.5 bg-slate-50 px-2 py-1 rounded">
                 <Calendar size={14} className="text-slate-400" /> {event.date}
               </span>
-
-              {event.location && (
-                <span className="flex items-center gap-1.5 bg-slate-50 px-2 py-1 rounded">
-                  <MapPin size={14} className="text-slate-400" />{" "}
-                  {event.location}
-                </span>
-              )}
 
               {event.time && (
                 <span className="flex items-center gap-1.5 bg-slate-50 px-2 py-1 rounded">
@@ -72,6 +119,13 @@ export default function EventPost() {
                 </span>
               )}
             </div>
+
+            {event.location && (
+              <span className="flex items-center gap-1.5 bg-slate-50 px-2 py-1 rounded w-fit">
+                <MapPin size={14} className="text-slate-400" />
+                {event.location}
+              </span>
+            )}
           </div>
         </div>
 
@@ -155,7 +209,7 @@ export default function EventPost() {
 
           {/* Main Body Text */}
           <div className="prose prose-lg prose-slate max-w-none prose-headings:font-serif prose-headings:text-slate-900 prose-p:text-slate-600">
-            {event.body ? <PortableText value={event.body} /> : null}
+            {event.body ? <PortableText value={event.body} components={portableTextComponents} /> : null}
           </div>
 
           {/* Past Event Outcome */}
