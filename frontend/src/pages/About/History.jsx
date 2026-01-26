@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import {
   Calendar,
+<<<<<<< HEAD
   Briefcase,
   Star,
   ChevronRight,
@@ -11,6 +12,11 @@ import {
   TrendingUp,
   History,
   ArrowRightCircle
+=======
+  MapPin,
+  FileText,
+  ChevronRight
+>>>>>>> 8e3883e4c4f5f257328b335f0adf99d02897015f
 } from "lucide-react";
 import Navbar from "../../components/layout/Navbar";
 import Footer from "../../components/layout/Footer";
@@ -32,7 +38,11 @@ const SanityBlockContent = ({ blocks }) => {
 // --- ANIMATION VARIANTS ---
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
+<<<<<<< HEAD
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+=======
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } }
+>>>>>>> 8e3883e4c4f5f257328b335f0adf99d02897015f
 };
 
 const staggerContainer = {
@@ -43,6 +53,7 @@ const staggerContainer = {
   },
 };
 
+<<<<<<< HEAD
 // --- TIMELINE EVENT CARD (MODERN BUSINESS CARD STYLE) ---
 const TimelineEvent = ({ event, index }) => {
   const isTop = index % 2 === 0;
@@ -213,6 +224,95 @@ const ScrollTimeline = ({ milestones, title, subtitle }) => {
   );
 };
 
+=======
+// --- NEW LIST CARD COMPONENT ---
+const HistoryCard = ({ event, index }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  // 1. Adjusted Image URL: Removed fixed height constraint to prevent cropping
+  const imageUrl = event.image?.asset?.url 
+    ? urlFor(event.image).width(800).url() 
+    : null;
+
+  const description = event.description || "";
+  const isLongDescription = description.length > 200;
+
+  const displayDate = (dateString) => {
+    return dateString || 'Date Unknown';
+  };
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.3, delay: index * 0.1 }}
+      className="group bg-white border border-slate-200 rounded-xl overflow-hidden hover:shadow-xl hover:border-emerald-500/30 transition-all duration-300 flex flex-col md:flex-row mb-10"
+    >
+      {/* 
+         LEFT COLUMN: IMAGE 
+         Fixed width on desktop, Auto height to show full photo without crop.
+      */}
+      <div className="md:w-[280px] lg:w-[320px] shrink-0 bg-slate-50 relative border-b md:border-b-0 md:border-r border-slate-100">
+        {imageUrl ? (
+          <img 
+            src={imageUrl} 
+            alt={event.name} 
+            // h-auto ensures the image determines its own height based on aspect ratio
+            className="w-full h-auto block object-cover" 
+          />
+        ) : (
+          <div className="w-full h-64 md:h-full min-h-[250px] flex items-center justify-center bg-slate-100 text-slate-300">
+             <FileText size={48} />
+          </div>
+        )}
+      </div>
+
+      {/* RIGHT COLUMN: CONTENT */}
+      <div className="flex-1 p-6 md:p-8 flex flex-col justify-center">
+        <div className="mb-4">
+          {/* Badge Row */}
+          <div className="flex flex-wrap items-center gap-3 mb-3">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold uppercase tracking-wider">
+              <Calendar size={12} />
+              {displayDate(event.date)}
+            </span>
+            
+            {event.location && (
+              <span className="inline-flex items-center gap-1 text-slate-400 text-xs font-medium uppercase tracking-wide">
+                <MapPin size={12} />
+                {event.location}
+              </span>
+            )}
+          </div>
+
+          {/* Title - Serif for "Presidential" look */}
+          <h3 className="text-2xl md:text-3xl font-serif font-bold text-slate-800 mb-4 group-hover:text-emerald-800 transition-colors">
+            {event.name}
+          </h3>
+
+          {/* Description */}
+          <div className="text-slate-600 leading-relaxed text-sm md:text-base">
+            {isExpanded ? description : `${description.slice(0, 200)}${isLongDescription ? '...' : ''}`}
+          </div>
+
+          {/* Expand Button */}
+          {isLongDescription && (
+            <button 
+              onClick={() => setIsExpanded(!isExpanded)}
+              className="mt-4 inline-flex items-center gap-1 text-emerald-600 font-semibold text-sm hover:text-emerald-800 transition-colors"
+            >
+              {isExpanded ? "Show Less" : "Read Full Bio"}
+              <ChevronRight size={16} className={`transform transition-transform ${isExpanded ? 'rotate-90' : ''}`} />
+            </button>
+          )}
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+>>>>>>> 8e3883e4c4f5f257328b335f0adf99d02897015f
 export default function HistoryPage() {
   const [content, setContent] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -229,9 +329,15 @@ export default function HistoryPage() {
       "milestoneTitle": milestoneSection.milestoneTitle,
       "milestoneSubtitle": milestoneSection.milestoneSubtitle,
       "milestones": milestoneSection.milestones[]{ 
+<<<<<<< HEAD
         year, name, description, 
         image { asset -> { _id, url } }, 
         icon { asset -> { _id, url } } 
+=======
+        date, name, description, 
+        image { asset -> { _id, url } },
+        location
+>>>>>>> 8e3883e4c4f5f257328b335f0adf99d02897015f
       },
       "keyAchievementsTitle": keyAchievementsSection.keyAchievementsTitle,
       "keyAchievementsSubtitle": keyAchievementsSection.keyAchievementsSubtitle,
@@ -254,7 +360,19 @@ export default function HistoryPage() {
   );
 
   const sortedMilestones = content?.milestones 
+<<<<<<< HEAD
     ? [...content.milestones].sort((a, b) => parseInt(a.year) - parseInt(b.year)) 
+=======
+    ? [...content.milestones].sort((a, b) => {
+        // Extract year for sorting
+        const getYear = (dateStr) => {
+          if (!dateStr || dateStr === '-') return 0
+          const yearMatch = dateStr.match(/\d{4}/)
+          return yearMatch ? parseInt(yearMatch[0]) : 0
+        }
+        return getYear(b.date) - getYear(a.date)
+      })
+>>>>>>> 8e3883e4c4f5f257328b335f0adf99d02897015f
     : [];
 
   return (
@@ -262,8 +380,13 @@ export default function HistoryPage() {
       <TopBar />
       <Navbar />
 
+<<<<<<< HEAD
       {/* --- HERO SECTION --- */}
       <section className="relative h-[60vh] flex items-center justify-center overflow-hidden">
+=======
+      {/* --- HERO SECTION (UNCHANGED) --- */}
+      <section className="relative h-[60vh] min-h-[500px] flex items-center justify-center overflow-hidden">
+>>>>>>> 8e3883e4c4f5f257328b335f0adf99d02897015f
         <div className="absolute inset-0 z-0">
           <img
             src={content?.heroBackgroundImage ? urlFor(content.heroBackgroundImage).url() : ""}
@@ -292,9 +415,15 @@ export default function HistoryPage() {
         </div>
       </section>
 
+<<<<<<< HEAD
       {/* --- BRIEF HISTORY SECTION --- */}
       <section className="py-24 bg-white">
         <div className="container mx-auto px-6">
+=======
+      {/* --- BRIEF HISTORY SECTION (UNCHANGED) --- */}
+      <section className="py-24 bg-white border-b border-slate-100">
+        <div className="container mx-auto px-6 max-w-6xl max-w-auto">
+>>>>>>> 8e3883e4c4f5f257328b335f0adf99d02897015f
           <div className="grid lg:grid-cols-12 gap-12 items-center">
             
             {/* Image Side */}
@@ -307,7 +436,10 @@ export default function HistoryPage() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-tr from-emerald-900/20 to-transparent pointer-events-none" />
               </div>
+<<<<<<< HEAD
               {/* Decorative Element */}
+=======
+>>>>>>> 8e3883e4c4f5f257328b335f0adf99d02897015f
               <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-amber-50 rounded-full -z-10" />
               <div className="absolute -top-6 -left-6 w-32 h-32 bg-emerald-50 rounded-full -z-10" />
             </div>
@@ -334,6 +466,7 @@ export default function HistoryPage() {
               </div>
             </div>
 
+<<<<<<< HEAD
           </div>
         </div>
       </section>
@@ -383,9 +516,34 @@ export default function HistoryPage() {
                 </motion.div>
               ))}
             </div>
+=======
+>>>>>>> 8e3883e4c4f5f257328b335f0adf99d02897015f
           </div>
-        </section>
-      )}
+        </div>
+      </section>
+
+      {/* --- REVISED LEADERSHIP / PRESIDENTS LIST --- */}
+      <section className="py-24 bg-slate-50 relative">
+        <div className="absolute inset-0 opacity-30 pointer-events-none">
+          <div className="absolute right-0 top-0 w-1/3 h-full bg-gradient-to-l from-emerald-50/50 to-transparent" />
+        </div>
+
+        <div className="container mx-auto px-6 max-w-5xl relative z-10">
+          
+          <div className="mb-20">
+             <span className="text-emerald-600 font-bold tracking-widest text-sm uppercase mb-2 block">The Leadership</span>
+             <h2 className="text-4xl font-serif font-bold text-slate-900 mb-6">{content?.milestoneTitle || "Our Presidents"}</h2>
+             <p className="text-slate-500 max-w-2xl text-lg leading-relaxed">{content?.milestoneSubtitle || "Honoring the leaders who have shaped our path through the years."}</p>
+          </div>
+
+          <div className="flex flex-col gap-6">
+            {sortedMilestones.map((event, index) => (
+              <HistoryCard key={index} event={event} index={index} />
+            ))}
+          </div>
+
+        </div>
+      </section>
       
       <Footer />
     </div>

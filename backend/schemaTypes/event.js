@@ -123,15 +123,25 @@ export default defineType({
     defineField({
       name: 'body',
       title: 'Full Article Content',
+<<<<<<< HEAD
       type: 'array',
+=======
+      type: 'array', 
+>>>>>>> 8e3883e4c4f5f257328b335f0adf99d02897015f
       of: [
         {
           type: 'block',
           styles: [
             {title: 'Normal', value: 'normal'},
+<<<<<<< HEAD
             {title: 'H1', value: 'h1'},
             {title: 'H2', value: 'h2'},
             {title: 'H3', value: 'h3'},
+=======
+            {title: 'Heading 1', value: 'h1'},
+            {title: 'Heading 2', value: 'h2'},
+            {title: 'Heading 3', value: 'h3'},
+>>>>>>> 8e3883e4c4f5f257328b335f0adf99d02897015f
             {title: 'Quote', value: 'blockquote'},
           ],
           lists: [
@@ -147,6 +157,7 @@ export default defineType({
             ],
             annotations: [
               {
+<<<<<<< HEAD
                 name: 'link',
                 title: 'Link',
                 type: 'object',
@@ -168,6 +179,27 @@ export default defineType({
           options: {hotspot: true},
         },
       ],
+=======
+                title: 'URL',
+                name: 'link',
+                type: 'object',
+                fields: [
+                  {
+                    title: 'URL',
+                    name: 'href',
+                    type: 'url',
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          type: 'image',
+          options: { hotspot: true }
+        }
+      ]
+>>>>>>> 8e3883e4c4f5f257328b335f0adf99d02897015f
     }),
   ],
 })

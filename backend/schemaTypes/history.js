@@ -105,24 +105,48 @@ export default {
               icon: Clock,
               fields: [
                 {
+<<<<<<< HEAD
                   name: 'year',
                   title: 'Year/Date',
                   type: 'string',
                   description: 'e.g., "1995" or "Q3 2005"',
+=======
+                  name: 'date',
+                  title: 'Date/Year',
+                  type: 'string',
+                  description: 'Year (e.g., "1993"), date range (e.g., "Jan 2024 - March 2025"), or "-" if unknown',
+>>>>>>> 8e3883e4c4f5f257328b335f0adf99d02897015f
                   validation: (Rule) => Rule.required(),
                 },
                 {
                   name: 'name',
+<<<<<<< HEAD
                   title: 'Name (President/Leader)',
                   type: 'string',
                   description: 'Name of the president or leader during this period',
                   validation: (Rule) => Rule.required(),
                 },
                 {
+=======
+                  title: 'President Name',
+                  type: 'string',
+                  description: 'Name or title of the president',
+                  validation: (Rule) => Rule.required(),
+                },
+                {
+                  name: 'image',
+                  title: 'Profile Picture',
+                  type: 'image',
+                  options: { hotspot: true },
+                  description: 'Portrait or profile image of the president',
+                },
+                {
+>>>>>>> 8e3883e4c4f5f257328b335f0adf99d02897015f
                   name: 'description',
                   title: 'Description',
                   type: 'text',
                   rows: 3,
+<<<<<<< HEAD
                 },
                 {
                   name: 'image',
@@ -130,6 +154,9 @@ export default {
                   type: 'image',
                   options: {hotspot: true},
                   description: 'Optional image icon for the milestone. If not provided, a default person icon will be displayed.',
+=======
+                  validation: (Rule) => Rule.required(),
+>>>>>>> 8e3883e4c4f5f257328b335f0adf99d02897015f
                 },
               ],
             },
@@ -169,8 +196,12 @@ export default {
 
   preview: {
     select: {title: 'heroSection.heroTitle', subtitle: 'milestoneSection.milestoneTitle'},
+<<<<<<< HEAD
     prepare(selection) {
       const {title, subtitle} = selection || {}
+=======
+    prepare({title, subtitle}) {
+>>>>>>> 8e3883e4c4f5f257328b335f0adf99d02897015f
       return {
         title: title || 'History Page',
         subtitle: subtitle ? `Milestones: ${subtitle}` : 'Setup in progress',

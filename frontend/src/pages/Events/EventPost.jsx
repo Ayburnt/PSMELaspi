@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { client, urlFor } from "../../sanityClient";
 import { PortableText } from "@portabletext/react";
+<<<<<<< HEAD
 import { 
   ArrowLeft, 
   Calendar, 
@@ -14,9 +15,66 @@ import {
   Check
 } from "lucide-react";
 
+=======
+import { ArrowLeft, Calendar, MapPin, Clock, CheckCircle2, ExternalLink } from "lucide-react";
+>>>>>>> 8e3883e4c4f5f257328b335f0adf99d02897015f
 import Navbar from "../../components/layout/Navbar";
 import Footer from "../../components/layout/Footer";
 import TopBar from "../../components/layout/TopBar";
+
+const portableTextComponents = {
+  block: {
+    normal: ({children}) => <p className="text-slate-700 leading-relaxed mb-4">{children}</p>,
+    h1: ({children}) => <h1 className="text-3xl font-serif font-bold text-slate-900 mt-8 mb-4">{children}</h1>,
+    h2: ({children}) => <h2 className="text-2xl font-serif font-bold text-slate-900 mt-6 mb-3">{children}</h2>,
+    h3: ({children}) => <h3 className="text-xl font-serif font-bold text-slate-900 mt-5 mb-2">{children}</h3>,
+    blockquote: ({children}) => <blockquote className="border-l-4 border-green-500 bg-slate-50 p-4 rounded-r-lg my-4 italic text-slate-600">{children}</blockquote>,
+  },
+  list: {
+    bullet: ({children}) => <ul className="list-disc list-inside space-y-2 mb-4 text-slate-700">{children}</ul>,
+    number: ({children}) => <ol className="list-decimal list-inside space-y-2 mb-4 text-slate-700">{children}</ol>,
+  },
+  listItem: {
+    bullet: ({children}) => <li className="ml-2">{children}</li>,
+    number: ({children}) => <li className="ml-2">{children}</li>,
+  },
+  marks: {
+    strong: ({children}) => <strong className="font-bold text-slate-900">{children}</strong>,
+    em: ({children}) => <em className="italic">{children}</em>,
+    underline: ({children}) => <u className="underline">{children}</u>,
+    code: ({children}) => <code className="bg-slate-100 px-2 py-1 rounded text-sm font-mono text-red-600">{children}</code>,
+    link: ({value, children}) => {
+      const url = value?.href;
+      return (
+        <a 
+          href={url} 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="text-green-600 hover:text-green-700 underline cursor-pointer"
+          onClick={(e) => {
+            if (url) {
+              window.open(url, '_blank');
+            }
+          }}
+        >
+          {children}
+          <ExternalLink size={14} className="inline ml-1" />
+        </a>
+      );
+    },
+  },
+  types: {
+    image: ({value}) => (
+      <div className="my-8 rounded-2xl overflow-hidden shadow-lg">
+        <img 
+          src={urlFor(value).width(800).url()} 
+          alt="Article content" 
+          className="w-full h-auto object-cover"
+        />
+      </div>
+    ),
+  },
+};
 
 export default function EventPost() {
   const { slug } = useParams();
@@ -158,17 +216,26 @@ export default function EventPost() {
             Back to {event.eventType === "past" ? "Past" : "Upcoming"} Events
           </Link>
 
+<<<<<<< HEAD
           <div className="flex items-center gap-4 flex-wrap text-sm text-gray-500">
             <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full font-bold uppercase text-[10px] tracking-wider">
               {event.category}
             </span>
+=======
+          {/* Right Side: Meta Tags */}
+          <div className="flex flex-col gap-3 text-sm text-gray-500 ml-auto">
+            <div className="flex items-center gap-3 flex-wrap justify-end">
+              <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full font-bold uppercase text-[10px] tracking-wider w-fit">
+                {event.category}
+              </span>
+>>>>>>> 8e3883e4c4f5f257328b335f0adf99d02897015f
 
-            <div className="flex items-center gap-3">
               <span className="flex items-center gap-1.5 bg-slate-50 px-2 py-1 rounded">
                 <Calendar size={14} className="text-slate-400" />
                 {event.date}
               </span>
 
+<<<<<<< HEAD
               {event.location && (
                 <span className="flex items-center gap-1.5 bg-slate-50 px-2 py-1 rounded">
                   <MapPin size={14} className="text-slate-400" />
@@ -176,6 +243,8 @@ export default function EventPost() {
                 </span>
               )}
 
+=======
+>>>>>>> 8e3883e4c4f5f257328b335f0adf99d02897015f
               {event.time && (
                 <span className="flex items-center gap-1.5 bg-slate-50 px-2 py-1 rounded">
                   <Clock size={14} className="text-slate-400" />
@@ -183,6 +252,13 @@ export default function EventPost() {
                 </span>
               )}
             </div>
+
+            {event.location && (
+              <span className="flex items-center gap-1.5 bg-slate-50 px-2 py-1 rounded w-fit">
+                <MapPin size={14} className="text-slate-400" />
+                {event.location}
+              </span>
+            )}
           </div>
         </div>
 
@@ -236,6 +312,7 @@ export default function EventPost() {
             </p>
           )}
 
+<<<<<<< HEAD
           <div
             className="
               prose prose-lg prose-slate max-w-none
@@ -249,6 +326,36 @@ export default function EventPost() {
             {event.body && (
               <PortableText value={event.body} components={components} />
             )}
+=======
+          {/* Highlights */}
+          {event.highlights && event.highlights.length > 0 && (
+            <div className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm">
+              <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-2">
+                Event Highlights
+              </h2>
+              <ul className="grid md:grid-cols-2 gap-4">
+                {event.highlights.map((highlight, i) => (
+                  <li
+                    key={i}
+                    className="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 transition-colors"
+                  >
+                    <CheckCircle2
+                      className="text-green-600 flex-shrink-0 mt-0.5"
+                      size={18}
+                    />
+                    <span className="text-slate-700 text-sm font-medium">
+                      {highlight}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Main Body Text */}
+          <div className="prose prose-lg prose-slate max-w-none prose-headings:font-serif prose-headings:text-slate-900 prose-p:text-slate-600">
+            {event.body ? <PortableText value={event.body} components={portableTextComponents} /> : null}
+>>>>>>> 8e3883e4c4f5f257328b335f0adf99d02897015f
           </div>
 
           {event.eventType === "past" && event.success && (
